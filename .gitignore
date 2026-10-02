@@ -1,0 +1,11 @@
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Biến môi trường chứa API key — KHÔNG BAO GIỜ đưa lên GitHub
+.env
+.env*.local
+
+.DS_Store
