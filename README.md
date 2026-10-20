@@ -31,7 +31,9 @@ Claude API → câu trả lời hiện dần trên màn hình
 | `lib/siteConfig.ts` | Tên trường, phòng tham vấn, số điện thoại khẩn cấp | ✅ **Sửa ngay** cho đúng trường bạn |
 | `lib/systemPrompt.ts` | "Bộ não" của chatbot: vai trò, giới hạn, cách xử lý tình huống khẩn cấp, giọng điệu | ✅ Sửa để chatbot trả lời theo ý muốn |
 | `lib/safety.ts` | Danh sách từ khoá khủng hoảng (tự hại, bạo hành…) | ✅ Nhờ chuyên viên tâm lý bổ sung |
-| `app/page.tsx` | Trang chủ | Tuỳ ý |
+| `app/page.tsx` | Nội dung trang chủ: tâm trạng, chủ đề, hiểu lầm, hỏi đáp (sửa chữ trong các danh sách ở đầu file) | ✅ Tuỳ ý |
+| `app/globals.css` | Giao diện: màu sắc, bo góc, bố cục (đổi màu chủ đạo ở các biến `--brand-*` đầu file) | Tuỳ ý |
+| `components/` | Thanh menu, chân trang, logo, khung chat | Tuỳ ý |
 | `app/api/chat/route.ts` | Phần máy chủ gọi AI | Chỉ sửa khi đã hiểu code |
 
 ## Chạy thử trên máy của bạn

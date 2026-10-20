@@ -1,45 +1,38 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import Link from "next/link";
+import { Be_Vietnam_Pro } from "next/font/google";
 import ChatWidget from "@/components/ChatWidget";
+import SiteFooter from "@/components/SiteFooter";
+import SiteHeader from "@/components/SiteHeader";
 import { siteConfig } from "@/lib/siteConfig";
 import "./globals.css";
 
+// Phông chữ thiết kế riêng cho tiếng Việt, hiển thị dấu đẹp và rõ.
+const font = Be_Vietnam_Pro({
+  subsets: ["vietnamese", "latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: `${siteConfig.siteName} – Tâm lý học đường`,
-  description: `Website tâm lý học đường của ${siteConfig.schoolName}: tìm hiểu, khảo sát nhanh và tham vấn ẩn danh.`,
+  title: {
+    default: `${siteConfig.siteName} – Tâm lý học đường`,
+    template: `%s · ${siteConfig.siteName}`,
+  },
+  description: `Góc lắng nghe của học sinh ${siteConfig.schoolName}: tìm hiểu tâm lý học đường, khảo sát nhanh, tham vấn ẩn danh và trò chuyện với trợ lý AI.`,
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0c7a69",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="vi">
-      <body>
-        <nav className="site-nav">
-          <Link href="/" className="brand">
-            🌱 {siteConfig.siteName}
-          </Link>
-          <div className="nav-links">
-            <Link href="/#tim-hieu">Tìm hiểu</Link>
-            <Link href={siteConfig.surveyPath}>Khảo sát nhanh</Link>
-            <Link href={siteConfig.counselingPath}>Tham vấn</Link>
-          </div>
-        </nav>
+      <body className={font.className}>
+        <SiteHeader />
         <main>{children}</main>
-        <footer className="site-footer">
-          <p>
-            <strong>Cần hỗ trợ khẩn cấp?</strong>{" "}
-            {siteConfig.hotlines.map((h, i) => (
-              <span key={h.number}>
-                {i > 0 && " · "}
-                Gọi <a href={`tel:${h.number}`}>{h.number}</a> ({h.label})
-              </span>
-            ))}
-          </p>
-          <p>
-            © {siteConfig.schoolName}. Thông tin trên website chỉ mang tính tham khảo, không thay thế tư vấn của chuyên
-            viên tâm lý hoặc bác sĩ.
-          </p>
-        </footer>
+        <SiteFooter />
         <ChatWidget />
       </body>
     </html>

@@ -1,0 +1,17 @@
+// Logo: mầm cây non trong bong bóng trò chuyện — "lắng nghe" và "lớn lên".
+export function LogoMark({ size = 36 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
+      <defs>
+        <linearGradient id="logo-bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#1fb59a" />
+          <stop offset="1" stopColor="#0c7a69" />
+        </linearGradient>
+      </defs>
+      <path d="M20 3C10.6 3 3 9.9 3 18.5c0 4.6 2.2 8.8 5.8 11.6L7.5 37l7.3-3.6c1.6.4 3.4.6 5.2.6 9.4 0 17-6.9 17-15.5S29.4 3 20 3Z" fill="url(#logo-bg)" />
+      <path d="M20 27V17.5" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" />
+      <path d="M20 19c0-4.2-3-6.6-7.2-6.6 0 4.2 3 6.6 7.2 6.6Z" fill="#fff" />
+      <path d="M20 17.2c0-3.9 2.8-6.2 6.8-6.2 0 3.9-2.8 6.2-6.8 6.2Z" fill="#ffd166" />
+    </svg>
+  );
+}
