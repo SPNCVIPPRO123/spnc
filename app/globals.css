@@ -1110,6 +1110,33 @@ button {
   max-width: 640px;
 }
 
+.news-skeleton {
+  pointer-events: none;
+}
+.news-skeleton .news-thumb,
+.sk-line {
+  background: linear-gradient(90deg, #eef3f1 25%, #f7faf9 50%, #eef3f1 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite linear;
+}
+.sk-line {
+  display: block;
+  height: 14px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.sk-line.short {
+  width: 35%;
+}
+.sk-line.mid {
+  width: 70%;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
 /* ---------- Trang con (khảo sát, tham vấn) ---------- */
 .page-hero {
   padding: 72px 0 64px;

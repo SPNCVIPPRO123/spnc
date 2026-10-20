@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ExternalLink, Info, Newspaper } from "lucide-react";
+import ClientNews from "@/components/ClientNews";
 import NewsCard from "@/components/NewsCard";
 import { getNews, NEWS_CATEGORIES, NEWS_SOURCE, type NewsCategory } from "@/lib/news";
 
@@ -40,7 +41,10 @@ export default async function NewsPage({ category }: { category: NewsCategory })
             ))}
           </nav>
 
-          {items && items.length > 0 ? (
+          {!items ? (
+            // Máy chủ không lấy được tin: để trình duyệt của người xem tự lấy.
+            <ClientNews categoryId={category.id} limit={12} />
+          ) : items.length > 0 ? (
             <div className="news-grid">
               {items.map((item) => (
                 <NewsCard key={item.id} item={item} />
@@ -50,8 +54,7 @@ export default async function NewsPage({ category }: { category: NewsCategory })
             <div className="news-empty">
               <Info size={28} aria-hidden="true" />
               <p>
-                {items ? "Chưa có bài viết nào trong mục này." : "Tạm thời chưa tải được tin tức, bạn quay lại sau ít phút nhé."}{" "}
-                Bạn có thể xem trực tiếp tại{" "}
+                Chưa có bài viết nào trong mục này. Bạn có thể xem trực tiếp tại{" "}
                 <a href={NEWS_SOURCE.listUrl} target="_blank" rel="noopener noreferrer">
                   trang tin tức của Bộ GD&amp;ĐT
                 </a>

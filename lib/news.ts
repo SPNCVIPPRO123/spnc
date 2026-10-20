@@ -113,27 +113,34 @@ function toNewsItem(post: WpPost): NewsItem {
   };
 }
 
-// Lấy `limit` bài mới nhất trong một danh mục.
-// Trả về null nếu không lấy được (trang nguồn lỗi, mạng chậm…) để giao diện hiện thông báo thay thế.
-export async function getNews(categoryId: number, limit = 12): Promise<NewsItem[] | null> {
-  const url =
+// Địa chỉ API trả về `limit` bài mới nhất trong một danh mục.
+export function newsApiUrl(categoryId: number, limit: number): string {
+  return (
     `${NEWS_SOURCE.url}/wp-json/wp/v2/posts?categories=${categoryId}&per_page=${limit}` +
-    `&_embed=wp:featuredmedia&_fields=id,date,link,categories,title,excerpt,_links,_embedded`;
+    `&_embed=wp:featuredmedia&_fields=id,date,link,categories,title,excerpt,_links,_embedded`
+  );
+}
 
+// Chuyển dữ liệu WordPress thành danh sách tin để hiển thị.
+export function parseNews(data: unknown): NewsItem[] {
+  if (!Array.isArray(data)) throw new Error("Dữ liệu tin tức không đúng định dạng");
+  return (data as WpPost[]).map(toNewsItem);
+}
+
+// Máy chủ lấy tin (chạy khi build và mỗi giờ một lần).
+// Trả về null nếu không lấy được, ví dụ máy chủ Vercel ở nước ngoài bị trang nguồn chặn;
+// khi đó trình duyệt của người xem sẽ tự lấy tin (xem components/ClientNews.tsx).
+export async function getNews(categoryId: number, limit = 12): Promise<NewsItem[] | null> {
   try {
-    const res = await fetch(url, {
+    const res = await fetch(newsApiUrl(categoryId, limit), {
       headers: { Accept: "application/json", "User-Agent": "BanDongHanh/1.0 (website tam ly hoc duong)" },
       next: { revalidate: NEWS_REVALIDATE_SECONDS },
-      signal: AbortSignal.timeout(15_000),
+      signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const posts = (await res.json()) as WpPost[];
-    return posts.map(toNewsItem);
+    return parseNews(await res.json());
   } catch (err) {
-    console.error("[news] Không lấy được tin tức:", err);
-    // Khi đang build thì hiện thông báo thay thế để build không bị hỏng.
-    // Khi web đang chạy thì báo lỗi để Vercel giữ lại danh sách tin lấy được lần trước.
-    if (process.env.NEXT_PHASE === "phase-production-build") return null;
-    throw err;
+    console.error("[news] Máy chủ không lấy được tin tức, chuyển sang để trình duyệt tự lấy:", err);
+    return null;
   }
 }
