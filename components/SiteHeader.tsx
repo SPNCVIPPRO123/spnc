@@ -10,9 +10,9 @@ import { siteConfig } from "@/lib/siteConfig";
 
 const NAV_LINKS = [
   { href: "/#tim-hieu", label: "Tìm hiểu" },
-  { href: "/#chu-de", label: "Chủ đề" },
   { href: siteConfig.surveyPath, label: "Khảo sát nhanh" },
   { href: siteConfig.counselingPath, label: "Tham vấn" },
+  { href: "/tin-tuc", label: "Tin tức" },
   { href: "/#hoi-dap", label: "Hỏi đáp" },
 ];
 

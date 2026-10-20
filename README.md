@@ -6,6 +6,7 @@ Website giúp học sinh:
 2. **Khảo sát nhanh** để tự nhìn lại tâm trạng của mình *(đang xây dựng)*.
 3. **Tham vấn trực tuyến** với chuyên viên tâm lý của trường, có thể **ẩn danh** *(đang xây dựng)*.
 4. **Trò chuyện với chatbot AI** "Bạn Đồng Hành" ✅ *(đã có)*.
+5. **Tin tức** tự động cập nhật mỗi giờ từ trang của Bộ GD&ĐT ✅ *(đã có, trang `/tin-tuc`)*.
 
 ## Chatbot hoạt động thế nào?
 
@@ -33,7 +34,8 @@ Claude API → câu trả lời hiện dần trên màn hình
 | `lib/safety.ts` | Danh sách từ khoá khủng hoảng (tự hại, bạo hành…) | ✅ Nhờ chuyên viên tâm lý bổ sung |
 | `app/page.tsx` | Nội dung trang chủ: tâm trạng, chủ đề, hiểu lầm, hỏi đáp (sửa chữ trong các danh sách ở đầu file) | ✅ Tuỳ ý |
 | `app/globals.css` | Giao diện: màu sắc, bo góc, bố cục (đổi màu chủ đạo ở các biến `--brand-*` đầu file) | Tuỳ ý |
-| `components/` | Thanh menu, chân trang, logo, khung chat | Tuỳ ý |
+| `components/` | Thanh menu, chân trang, logo, khung chat, thẻ tin tức | Tuỳ ý |
+| `lib/news.ts` | Tin tức tự động lấy từ Cổng thông tin CTXH & TVTL trường học (Bộ GD&ĐT), cập nhật mỗi giờ; đổi các mục tin ở `NEWS_CATEGORIES` | Tuỳ ý |
 | `app/api/chat/route.ts` | Phần máy chủ gọi AI | Chỉ sửa khi đã hiểu code |
 
 ## Chạy thử trên máy của bạn

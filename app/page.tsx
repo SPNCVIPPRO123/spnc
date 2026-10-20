@@ -23,7 +23,12 @@ import {
 } from "lucide-react";
 import { OpenChatButton } from "@/components/ChatWidget";
 import { LogoMark } from "@/components/Logo";
+import NewsCard from "@/components/NewsCard";
+import { getNews, NEWS_CATEGORIES } from "@/lib/news";
 import { siteConfig } from "@/lib/siteConfig";
+
+// Trang chủ có mục "Tin tức mới" nên cũng tự cập nhật mỗi giờ.
+export const revalidate = 3600;
 
 // Nội dung trang chủ — sửa chữ ở đây là trang tự cập nhật.
 
@@ -144,7 +149,9 @@ const FAQS = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const latestNews = await getNews(NEWS_CATEGORIES[0].id, 3);
+
   return (
     <>
       {/* ---------- Hero ---------- */}
@@ -364,8 +371,30 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ---------- Tin tức mới ---------- */}
+      {latestNews && latestNews.length > 0 && (
+        <section className="section">
+          <div className="container">
+            <div className="section-head-row">
+              <div>
+                <span className="section-tag">Tin tức</span>
+                <h2 className="section-title">Tin mới về tâm lý học đường</h2>
+              </div>
+              <Link className="btn btn-soft" href="/tin-tuc">
+                Xem tất cả tin tức <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            </div>
+            <div className="news-grid">
+              {latestNews.map((item) => (
+                <NewsCard key={item.id} item={item} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ---------- Hỏi đáp ---------- */}
-      <section id="hoi-dap" className="section">
+      <section id="hoi-dap" className="section section-tinted">
         <div className="container faq-grid">
           <div>
             <span className="section-tag">Hỏi đáp</span>
