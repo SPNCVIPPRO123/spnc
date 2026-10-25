@@ -5,6 +5,7 @@ Website giúp học sinh:
 1. **Tìm hiểu** tâm lý học đường là gì.
 2. **Khảo sát nhanh** để tự nhìn lại tâm trạng của mình ✅ *(đã có, trang `/khao-sat`, bản thử nghiệm)*.
    Phiếu được gửi tới chuyên viên, xem ở trang riêng có mật khẩu `/chuyen-vien` ✅.
+   Học sinh có thể tạo tài khoản bằng biệt danh để xem lại kết quả các lần khảo sát (`/dang-nhap`, `/tai-khoan`) ✅.
 3. **Tham vấn trực tuyến** với chuyên viên tâm lý của trường, có thể **ẩn danh** *(đang xây dựng)*.
 4. **Trò chuyện với chatbot AI** "Bạn Đồng Hành" ✅ *(đã có)*.
 5. **Tin tức** tự động cập nhật mỗi giờ từ trang của Bộ GD&ĐT ✅ *(đã có, trang `/tin-tuc`)*.
@@ -40,7 +41,8 @@ Claude API → câu trả lời hiện dần trên màn hình
 | `lib/news.ts` | Tin tức tự động lấy từ Cổng thông tin CTXH & TVTL trường học (Bộ GD&ĐT), cập nhật mỗi giờ; đổi các mục tin ở `NEWS_CATEGORIES` | Tuỳ ý |
 | `app/api/chat/route.ts` | Phần máy chủ gọi AI | Chỉ sửa khi đã hiểu code |
 | `app/api/khao-sat/route.ts`, `lib/submission.ts`, `lib/db.ts` | Nhận phiếu học sinh gửi, kiểm tra và lưu vào cơ sở dữ liệu | Chỉ sửa khi đã hiểu code |
-| `app/chuyen-vien/`, `lib/staffAuth.ts`, `lib/staffData.ts` | Trang chuyên viên: đăng nhập, danh sách phiếu, chi tiết phiếu | Chỉ sửa khi đã hiểu code |
+| `app/chuyen-vien/`, `lib/staffAuth.ts`, `lib/staffData.ts` | Trang chuyên viên: danh sách phiếu, chi tiết phiếu | Chỉ sửa khi đã hiểu code |
+| `app/dang-nhap/`, `app/tai-khoan/`, `lib/studentAuth.ts` | Trang đăng nhập chung (học sinh, chuyên viên) và tài khoản học sinh | Chỉ sửa khi đã hiểu code |
 
 ## Chạy thử trên máy của bạn
 
@@ -86,7 +88,7 @@ Mở trình duyệt vào <http://localhost:3000> rồi bấm nút **💬 Trò ch
 ## Lưu phiếu khảo sát cho chuyên viên xem
 
 Khi học sinh bấm **Gửi phiếu** ở cuối `/khao-sat`, câu trả lời được lưu vào cơ sở dữ liệu Postgres (Neon, gói miễn phí).
-Chuyên viên vào `/chuyen-vien`, nhập mật khẩu để xem danh sách phiếu. Phiếu trả lời “Có” ở câu C5 luôn nằm trên cùng
+Chuyên viên bấm **Đăng nhập** trên menu, chọn tab **Chuyên viên** và nhập mật khẩu để xem danh sách phiếu. Phiếu trả lời “Có” ở câu C5 luôn nằm trên cùng
 (viền đỏ), tiếp theo là phiếu có cảnh báo Phần 8 hoặc bạo lực, xâm hại. Chuyên viên có thể đánh dấu “Đã xử lý” và xóa phiếu.
 
 **Cài đặt trên Vercel (làm một lần):**
@@ -101,6 +103,10 @@ Chuyên viên vào `/chuyen-vien`, nhập mật khẩu để xem danh sách phi�
 sau 8 giờ; nhập sai 5 lần phải chờ 15 phút; dữ liệu phiếu chỉ được đọc ở máy chủ sau khi kiểm tra đăng nhập; trang không cho
 công cụ tìm kiếm lập chỉ mục. Phiếu không hỏi họ tên, không lưu IP; cách liên lạc chỉ được lưu khi học sinh tự chọn để lại.
 Đổi mật khẩu (sửa `STAFF_PASSWORD` rồi Redeploy) sẽ đăng xuất mọi người.
+
+**Tài khoản học sinh:** ở cùng trang Đăng nhập, học sinh tạo tài khoản bằng biệt danh và mật khẩu (không hỏi họ tên, email hay
+số điện thoại). Khi đã đăng nhập, phiếu em gửi được lưu vào tài khoản để em xem lại ở `/tai-khoan`; chuyên viên không thấy biệt
+danh. Mật khẩu được băm bằng scrypt; quên mật khẩu thì không lấy lại được. Học sinh có thể tự xóa tài khoản.
 
 > ⚠️ Đây là dữ liệu nhạy cảm của học sinh dưới 18 tuổi. Trước khi cho học sinh làm thật, hãy hỏi giảng viên và nhà trường về
 > việc xin đồng ý của phụ huynh, ai được giữ mật khẩu, phiếu được giữ bao lâu, và quy trình khi có phiếu cảnh báo C5.

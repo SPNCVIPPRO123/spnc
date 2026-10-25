@@ -2489,22 +2489,94 @@ button {
   font-size: 1.5rem;
   font-weight: 800;
 }
-.staff-login {
-  max-width: 420px;
-  margin: 0 auto;
+.login-section {
+  padding-top: 32px;
+}
+.login-shell {
+  max-width: 560px;
+}
+.login-shell h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-align: center;
+}
+.login-current {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.login-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px;
+  margin-bottom: 18px;
+  border-radius: 16px;
+  background: var(--tint);
+}
+.login-tab {
+  flex: 1 1 140px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 12px;
+  background: none;
+  color: var(--ink-2);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+.login-tab.is-active {
+  background: var(--surface);
+  color: var(--brand);
+  box-shadow: var(--shadow-sm);
+}
+.login-form {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: stretch;
 }
-.staff-login .page-hero-icon {
-  align-self: center;
-}
-.staff-login h1 {
-  text-align: center;
-}
-.staff-login label {
+.login-form label {
   font-weight: 600;
+  margin-top: 4px;
+}
+.login-form .survey-text {
+  margin-top: 0;
+}
+.login-form .btn {
+  margin-top: 8px;
+}
+.password-field {
+  position: relative;
+}
+.password-field .survey-text {
+  padding-right: 48px;
+}
+.password-eye {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  padding: 6px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.password-eye:hover {
+  color: var(--brand);
+  background: var(--brand-50);
+}
+.account-delete {
+  margin-top: 28px;
 }
 .staff-head {
   display: flex;

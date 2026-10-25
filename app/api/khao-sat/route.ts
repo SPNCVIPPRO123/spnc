@@ -1,12 +1,14 @@
 import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { ensureSchema, sql } from "@/lib/db";
+import { currentStudent } from "@/lib/studentAuth";
 import { sanitizeAnswers, sanitizeContact } from "@/lib/submission";
 import { protectionConcern, safetyConcern } from "@/lib/survey";
 
 export const runtime = "nodejs";
 
 // Nhận phiếu khảo sát học sinh gửi lên và lưu vào cơ sở dữ liệu để chuyên viên xem ở trang /chuyen-vien.
-// Không lưu địa chỉ IP hay thông tin trình duyệt. Chỉ lưu câu trả lời, cách liên lạc (nếu học sinh tự để lại) và thời gian gửi.
+// Không lưu địa chỉ IP hay thông tin trình duyệt. Chỉ lưu câu trả lời, cách liên lạc (nếu học sinh tự để lại), thời gian gửi
+// và tài khoản của em nếu em đang đăng nhập (để em xem lại kết quả; chuyên viên không thấy biệt danh).
 
 const MAX_BODY = 50_000; // byte
 const RATE_LIMIT = 10; // số lần gửi tối đa…
@@ -62,13 +64,14 @@ export async function POST(req: Request) {
 
   try {
     await ensureSchema();
+    const studentId = (await currentStudent())?.id ?? null;
 
     // Học sinh bấm "Xem lại câu trả lời" rồi gửi lại: cập nhật phiếu cũ thay vì tạo phiếu mới.
     if (typeof body.id === "string" && typeof body.token === "string") {
       const rows = await sql`
         UPDATE survey_submissions
         SET answers = ${data}::jsonb, contact = ${contact}, urgent = ${safety.urgent}, safety = ${safety.flagged},
-            protection = ${protection}, updated_at = now()
+            protection = ${protection}, student_id = COALESCE(${studentId}, student_id), updated_at = now()
         WHERE id = ${body.id} AND edit_token_hash = ${hashToken(body.token)}
         RETURNING id`;
       if (rows.length > 0) return json({ id: body.id, token: body.token });
@@ -77,8 +80,8 @@ export async function POST(req: Request) {
     const id = randomUUID();
     const token = randomBytes(32).toString("base64url");
     await sql`
-      INSERT INTO survey_submissions (id, edit_token_hash, answers, contact, urgent, safety, protection)
-      VALUES (${id}, ${hashToken(token)}, ${data}::jsonb, ${contact}, ${safety.urgent}, ${safety.flagged}, ${protection})`;
+      INSERT INTO survey_submissions (id, edit_token_hash, answers, contact, urgent, safety, protection, student_id)
+      VALUES (${id}, ${hashToken(token)}, ${data}::jsonb, ${contact}, ${safety.urgent}, ${safety.flagged}, ${protection}, ${studentId})`;
     return json({ id, token });
   } catch (err) {
     console.error("[khao-sat] Lỗi lưu phiếu:", err);

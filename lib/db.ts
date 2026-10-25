@@ -32,6 +32,23 @@ export function ensureSchema(): Promise<void> {
         status TEXT NOT NULL DEFAULT 'moi'
       )`;
     await sql`CREATE INDEX IF NOT EXISTS survey_submissions_created_idx ON survey_submissions (created_at DESC)`;
+    // Tài khoản học sinh: chỉ có biệt danh và mật khẩu đã băm, không có họ tên hay email.
+    await sql`
+      CREATE TABLE IF NOT EXISTS students (
+        id TEXT PRIMARY KEY,
+        nickname TEXT NOT NULL,
+        nickname_key TEXT NOT NULL UNIQUE,
+        password_hash TEXT NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+      )`;
+    await sql`
+      CREATE TABLE IF NOT EXISTS student_sessions (
+        token_hash TEXT PRIMARY KEY,
+        student_id TEXT NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+        expires_at TIMESTAMPTZ NOT NULL
+      )`;
+    await sql`ALTER TABLE survey_submissions ADD COLUMN IF NOT EXISTS student_id TEXT REFERENCES students(id) ON DELETE SET NULL`;
+    await sql`CREATE INDEX IF NOT EXISTS survey_submissions_student_idx ON survey_submissions (student_id)`;
   })().catch((err) => {
     ready = null;
     throw err;

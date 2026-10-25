@@ -45,7 +45,7 @@ function clearSaved() {
   } catch {}
 }
 
-export default function Survey() {
+export default function Survey({ nickname }: { nickname?: string }) {
   const [step, setStep] = useState<Step>("intro");
   const [answers, setAnswers] = useState<Answers>({});
   const [missing, setMissing] = useState<string[]>([]);
@@ -129,6 +129,7 @@ export default function Survey() {
       {step === "submit" && (
         <SurveySubmit
           answers={answers}
+          nickname={nickname}
           onBack={() => goTo(SECTIONS.length - 1)}
           onDone={(sent) => {
             setSendFailed(!sent);

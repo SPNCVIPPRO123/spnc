@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LockKeyhole, Menu, MessageCircleHeart, X } from "lucide-react";
+import { Menu, MessageCircleHeart, UserRound, X } from "lucide-react";
 import { OpenChatButton } from "@/components/ChatWidget";
 import { LogoMark } from "@/components/Logo";
 import { siteConfig } from "@/lib/siteConfig";
@@ -40,8 +40,8 @@ export default function SiteHeader() {
               {l.label}
             </Link>
           ))}
-          <Link href="/chuyen-vien" className="nav-staff" onClick={() => setMenuOpen(false)}>
-            <LockKeyhole size={15} aria-hidden="true" /> Chuyên viên
+          <Link href="/dang-nhap" className="nav-staff" onClick={() => setMenuOpen(false)}>
+            <UserRound size={15} aria-hidden="true" /> Đăng nhập
           </Link>
           <OpenChatButton className="btn btn-primary btn-sm nav-cta">
             <MessageCircleHeart size={18} aria-hidden="true" /> Trò chuyện ngay

@@ -48,7 +48,7 @@ function isFlagged(q: Question, answers: Answers): boolean {
 
 export default async function SubmissionPage({ params }: { params: Promise<{ id: string }> }) {
   if (!hasDatabase() || !isStaffConfigured()) return <StaffSetupNotice />;
-  if (!(await isStaff())) redirect("/chuyen-vien");
+  if (!(await isStaff())) redirect("/dang-nhap?vai=chuyen-vien");
 
   const { id } = await params;
   const row = await getSubmission(id);

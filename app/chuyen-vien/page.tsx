@@ -1,6 +1,6 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { LogOut } from "lucide-react";
-import StaffLogin from "@/components/StaffLogin";
 import StaffSetupNotice from "@/components/StaffSetupNotice";
 import { AlertBadges, StatusBadge, formatTime } from "@/components/StaffBadges";
 import { hasDatabase } from "@/lib/db";
@@ -19,7 +19,7 @@ const FILTERS: { id: Filter; label: string }[] = [
 
 export default async function StaffPage({ searchParams }: { searchParams: Promise<{ loc?: string; trang?: string }> }) {
   if (!hasDatabase() || !isStaffConfigured()) return <StaffSetupNotice />;
-  if (!(await isStaff())) return <StaffLogin />;
+  if (!(await isStaff())) redirect("/dang-nhap?vai=chuyen-vien");
 
   const params = await searchParams;
   const filter: Filter = FILTERS.some((f) => f.id === params.loc) ? (params.loc as Filter) : "tat-ca";
