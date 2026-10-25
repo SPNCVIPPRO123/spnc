@@ -39,6 +39,9 @@ export default function SiteFooter() {
             <li>
               <Link href="/#hoi-dap">Hỏi đáp</Link>
             </li>
+            <li>
+              <Link href="/chuyen-vien">Đăng nhập cho chuyên viên</Link>
+            </li>
           </ul>
         </div>
 
