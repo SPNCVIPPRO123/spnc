@@ -4,6 +4,7 @@ Website giúp học sinh:
 
 1. **Tìm hiểu** tâm lý học đường là gì.
 2. **Khảo sát nhanh** để tự nhìn lại tâm trạng của mình ✅ *(đã có, trang `/khao-sat`, bản thử nghiệm)*.
+   Phiếu được gửi tới chuyên viên, xem ở trang riêng có mật khẩu `/chuyen-vien` ✅.
 3. **Tham vấn trực tuyến** với chuyên viên tâm lý của trường, có thể **ẩn danh** *(đang xây dựng)*.
 4. **Trò chuyện với chatbot AI** "Bạn Đồng Hành" ✅ *(đã có)*.
 5. **Tin tức** tự động cập nhật mỗi giờ từ trang của Bộ GD&ĐT ✅ *(đã có, trang `/tin-tuc`)*.
@@ -38,6 +39,8 @@ Claude API → câu trả lời hiện dần trên màn hình
 | `lib/survey.ts` | Toàn bộ câu hỏi khảo sát (giữ mã câu như phiếu giấy) và cách tính kết quả DASS-21 | ✅ Sửa câu hỏi ở đây |
 | `lib/news.ts` | Tin tức tự động lấy từ Cổng thông tin CTXH & TVTL trường học (Bộ GD&ĐT), cập nhật mỗi giờ; đổi các mục tin ở `NEWS_CATEGORIES` | Tuỳ ý |
 | `app/api/chat/route.ts` | Phần máy chủ gọi AI | Chỉ sửa khi đã hiểu code |
+| `app/api/khao-sat/route.ts`, `lib/submission.ts`, `lib/db.ts` | Nhận phiếu học sinh gửi, kiểm tra và lưu vào cơ sở dữ liệu | Chỉ sửa khi đã hiểu code |
+| `app/chuyen-vien/`, `lib/staffAuth.ts`, `lib/staffData.ts` | Trang chuyên viên: đăng nhập, danh sách phiếu, chi tiết phiếu | Chỉ sửa khi đã hiểu code |
 
 ## Chạy thử trên máy của bạn
 
@@ -80,6 +83,28 @@ Mở trình duyệt vào <http://localhost:3000> rồi bấm nút **💬 Trò ch
 3. Ở mục **Environment Variables**, thêm `ANTHROPIC_API_KEY` = key của bạn.
 4. Bấm **Deploy**. Vài phút sau bạn sẽ có đường link để gửi giảng viên.
 
+## Lưu phiếu khảo sát cho chuyên viên xem
+
+Khi học sinh bấm **Gửi phiếu** ở cuối `/khao-sat`, câu trả lời được lưu vào cơ sở dữ liệu Postgres (Neon, gói miễn phí).
+Chuyên viên vào `/chuyen-vien`, nhập mật khẩu để xem danh sách phiếu. Phiếu trả lời “Có” ở câu C5 luôn nằm trên cùng
+(viền đỏ), tiếp theo là phiếu có cảnh báo Phần 8 hoặc bạo lực, xâm hại. Chuyên viên có thể đánh dấu “Đã xử lý” và xóa phiếu.
+
+**Cài đặt trên Vercel (làm một lần):**
+1. Vào project trên <https://vercel.com> → tab **Storage** → **Create Database** → chọn **Neon** (Serverless Postgres)
+   → gói **Free** → khu vực **Singapore** → **Create**. Ở bước kết nối, chọn project này và để nguyên tên biến.
+   Vercel tự thêm biến `DATABASE_URL`.
+2. Tab **Settings → Environment Variables** → thêm `STAFF_PASSWORD` = một mật khẩu dài (ít nhất 10 ký tự, nên 16 ký tự trở lên).
+3. Tab **Deployments** → bấm **⋯** ở bản mới nhất → **Redeploy**.
+4. Mở `https://<tên-web>.vercel.app/chuyen-vien` và đăng nhập. Bảng dữ liệu tự được tạo khi có phiếu đầu tiên.
+
+**Bảo mật đã có sẵn:** mật khẩu chỉ được so sánh trên máy chủ; phiên đăng nhập là cookie đã ký, JavaScript không đọc được, hết hạn
+sau 8 giờ; nhập sai 5 lần phải chờ 15 phút; dữ liệu phiếu chỉ được đọc ở máy chủ sau khi kiểm tra đăng nhập; trang không cho
+công cụ tìm kiếm lập chỉ mục. Phiếu không hỏi họ tên, không lưu IP; cách liên lạc chỉ được lưu khi học sinh tự chọn để lại.
+Đổi mật khẩu (sửa `STAFF_PASSWORD` rồi Redeploy) sẽ đăng xuất mọi người.
+
+> ⚠️ Đây là dữ liệu nhạy cảm của học sinh dưới 18 tuổi. Trước khi cho học sinh làm thật, hãy hỏi giảng viên và nhà trường về
+> việc xin đồng ý của phụ huynh, ai được giữ mật khẩu, phiếu được giữ bao lâu, và quy trình khi có phiếu cảnh báo C5.
+
 ## Chi phí
 
 Mỗi tin nhắn tốn một khoản nhỏ tiền API, tuỳ độ dài cuộc trò chuyện. Để giảm chi phí:
@@ -102,6 +127,6 @@ Mỗi tin nhắn tốn một khoản nhỏ tiền API, tuỳ độ dài cuộc t
 
 - [ ] Sửa `lib/siteConfig.ts` cho đúng thông tin trường.
 - [ ] Thử chatbot với khoảng 30 câu hỏi học sinh hay hỏi, ghi lại câu nào trả lời chưa tốt rồi chỉnh `lib/systemPrompt.ts`.
-- [x] Trang **Khảo sát nhanh**. Còn lại: thay 21 câu Phần 3 bằng bản DASS-21 tiếng Việt đã kiểm định, nhờ chuyên viên duyệt Phần 8 và các câu nhạy cảm; nếu muốn chuyên viên xem được phiếu thì cần thêm cơ sở dữ liệu.
+- [x] Trang **Khảo sát nhanh**. Còn lại: thay 21 câu Phần 3 bằng bản DASS-21 tiếng Việt đã kiểm định, nhờ chuyên viên duyệt Phần 8 và các câu nhạy cảm; phiếu đã gửi được tới chuyên viên (trang `/chuyen-vien`).
 - [ ] Làm trang **Tham vấn ẩn danh** (`app/tham-van/page.tsx`): đặt lịch, chat với chuyên viên (cần thêm cơ sở dữ liệu và đăng nhập cho chuyên viên).
 - [ ] (Nâng cao) Cho chatbot đọc thêm tài liệu riêng của trường (kỹ thuật RAG).
