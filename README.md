@@ -3,7 +3,7 @@
 Website giúp học sinh:
 
 1. **Tìm hiểu** tâm lý học đường là gì.
-2. **Khảo sát nhanh** để tự nhìn lại tâm trạng của mình *(đang xây dựng)*.
+2. **Khảo sát nhanh** để tự nhìn lại tâm trạng của mình ✅ *(đã có, trang `/khao-sat`, bản thử nghiệm)*.
 3. **Tham vấn trực tuyến** với chuyên viên tâm lý của trường, có thể **ẩn danh** *(đang xây dựng)*.
 4. **Trò chuyện với chatbot AI** "Bạn Đồng Hành" ✅ *(đã có)*.
 5. **Tin tức** tự động cập nhật mỗi giờ từ trang của Bộ GD&ĐT ✅ *(đã có, trang `/tin-tuc`)*.
@@ -35,6 +35,7 @@ Claude API → câu trả lời hiện dần trên màn hình
 | `app/page.tsx` | Nội dung trang chủ: tâm trạng, chủ đề, hiểu lầm, hỏi đáp (sửa chữ trong các danh sách ở đầu file) | ✅ Tuỳ ý |
 | `app/globals.css` | Giao diện: màu sắc, bo góc, bố cục (đổi màu chủ đạo ở các biến `--brand-*` đầu file) | Tuỳ ý |
 | `components/` | Thanh menu, chân trang, logo, khung chat, thẻ tin tức | Tuỳ ý |
+| `lib/survey.ts` | Toàn bộ câu hỏi khảo sát (giữ mã câu như phiếu giấy) và cách tính kết quả DASS-21 | ✅ Sửa câu hỏi ở đây |
 | `lib/news.ts` | Tin tức tự động lấy từ Cổng thông tin CTXH & TVTL trường học (Bộ GD&ĐT), cập nhật mỗi giờ; đổi các mục tin ở `NEWS_CATEGORIES` | Tuỳ ý |
 | `app/api/chat/route.ts` | Phần máy chủ gọi AI | Chỉ sửa khi đã hiểu code |
 
@@ -101,6 +102,6 @@ Mỗi tin nhắn tốn một khoản nhỏ tiền API, tuỳ độ dài cuộc t
 
 - [ ] Sửa `lib/siteConfig.ts` cho đúng thông tin trường.
 - [ ] Thử chatbot với khoảng 30 câu hỏi học sinh hay hỏi, ghi lại câu nào trả lời chưa tốt rồi chỉnh `lib/systemPrompt.ts`.
-- [ ] Làm trang **Khảo sát nhanh** (`app/khao-sat/page.tsx`). Nếu dùng thang đo chuẩn (ví dụ DASS-21, SDQ), cần chuyên viên hướng dẫn cách đọc kết quả.
+- [x] Trang **Khảo sát nhanh**. Còn lại: thay 21 câu Phần 3 bằng bản DASS-21 tiếng Việt đã kiểm định, nhờ chuyên viên duyệt Phần 8 và các câu nhạy cảm; nếu muốn chuyên viên xem được phiếu thì cần thêm cơ sở dữ liệu.
 - [ ] Làm trang **Tham vấn ẩn danh** (`app/tham-van/page.tsx`): đặt lịch, chat với chuyên viên (cần thêm cơ sở dữ liệu và đăng nhập cho chuyên viên).
 - [ ] (Nâng cao) Cho chatbot đọc thêm tài liệu riêng của trường (kỹ thuật RAG).

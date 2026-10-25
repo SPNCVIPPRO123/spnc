@@ -328,7 +328,7 @@ export default async function HomePage() {
                 <ClipboardList size={28} aria-hidden="true" />
               </span>
               <h3>Làm khảo sát nhanh</h3>
-              <p>Vài phút trả lời câu hỏi ngắn để nhìn lại tâm trạng của bạn trong thời gian gần đây.</p>
+              <p>Khoảng 15 phút trả lời câu hỏi để nhìn lại cảm xúc gần đây và biết nên tìm hỗ trợ ở đâu.</p>
               <Link className="btn btn-outline" href={siteConfig.surveyPath}>
                 Làm khảo sát
               </Link>
