@@ -193,6 +193,13 @@ button {
   background: var(--brand-50);
   color: var(--brand);
 }
+.main-nav a.nav-staff {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
 .nav-cta {
   margin-left: 10px;
 }
