@@ -67,7 +67,9 @@ export default async function SubmissionPage({ params }: { params: Promise<{ id:
 
       <div className="survey-card">
         <div className="staff-row-top">
-          <h1>Phiếu lớp {String(answers.A1 ?? "?")}</h1>
+          <h1>
+            {row.nickname ? `${row.nickname} · ` : ""}Phiếu lớp {String(answers.A1 ?? "?")}
+          </h1>
           <StatusBadge status={row.status} />
         </div>
         <p className="survey-muted">
@@ -76,6 +78,11 @@ export default async function SubmissionPage({ params }: { params: Promise<{ id:
             ` · học sinh sửa lại lúc ${formatTime(row.updated_at)}`}
         </p>
         <AlertBadges row={row} />
+        <p className="survey-muted small">
+          {row.nickname
+            ? `Biệt danh “${row.nickname}” là tên học sinh tự đặt khi tạo tài khoản, không phải tên thật.`
+            : "Học sinh gửi phiếu khi chưa đăng nhập tài khoản."}
+        </p>
         <p className="staff-contact">
           {row.contact ? (
             <>

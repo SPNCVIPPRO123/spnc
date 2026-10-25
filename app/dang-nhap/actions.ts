@@ -9,7 +9,10 @@ import {
   NICKNAME_MAX,
   NICKNAME_MIN,
   STUDENT_PASSWORD_MIN,
+  USERNAME_MAX,
+  USERNAME_MIN,
   cleanNickname,
+  cleanUsername,
   createStudent,
   currentStudent,
   deleteStudent,
@@ -53,16 +56,18 @@ export async function staffLogin(_prev: FormState, form: FormData): Promise<Form
 
 export async function studentLogin(_prev: FormState, form: FormData): Promise<FormState> {
   if (!hasDatabase()) return { error: NO_DB };
-  // Cả lớp có thể dùng chung một địa chỉ IP của trường, nên đếm lần sai theo IP + biệt danh.
-  const nickname = cleanNickname(form.get("nickname"));
-  const key = `hs:${await clientIp()}:${nickname?.toLocaleLowerCase("vi")}`;
+  // Cả lớp có thể dùng chung một địa chỉ IP của trường, nên đếm lần sai theo IP + tài khoản.
+  // Không kiểm tra định dạng khi đăng nhập: tài khoản tạo trước khi có ô "Tài khoản" dùng biệt danh (có dấu) làm tên đăng nhập.
+  const raw = form.get("username");
+  const username = typeof raw === "string" && raw.trim().length > 0 && raw.length <= 60 ? raw.trim() : null;
+  const key = `hs:${await clientIp()}:${username?.toLowerCase()}`;
   if (isLoginBlocked(key)) return { error: TOO_MANY };
 
   const password = form.get("password");
-  const student = nickname && typeof password === "string" ? await findStudent(nickname, password) : null;
+  const student = username && typeof password === "string" ? await findStudent(username, password) : null;
   if (!student) {
     recordLoginFailure(key);
-    return { error: "Biệt danh hoặc mật khẩu chưa đúng." };
+    return { error: "Tài khoản hoặc mật khẩu chưa đúng." };
   }
   await startSession(student.id);
   redirect(nextPath(form));
@@ -74,6 +79,11 @@ export async function studentRegister(_prev: FormState, form: FormData): Promise
   // Tối đa 40 tài khoản mới mỗi 15 phút từ một IP (đủ cho một lớp dùng chung mạng trường).
   if (isLoginBlocked(key, 40)) return { error: "Có quá nhiều tài khoản vừa được tạo từ mạng này. Hãy thử lại sau 15 phút." };
 
+  const username = cleanUsername(form.get("username"));
+  if (!username)
+    return {
+      error: `Tài khoản cần dài ${USERNAME_MIN}–${USERNAME_MAX} ký tự, chỉ gồm chữ không dấu, số hoặc dấu _ . - (không có khoảng trắng).`,
+    };
   const nickname = cleanNickname(form.get("nickname"));
   if (!nickname)
     return {
@@ -86,8 +96,8 @@ export async function studentRegister(_prev: FormState, form: FormData): Promise
 
   // Đếm mọi lần tạo tài khoản, để một máy không tạo hàng loạt tài khoản.
   recordLoginFailure(key);
-  const student = await createStudent(nickname, password);
-  if (student === "taken") return { error: "Biệt danh này đã có người dùng. Em chọn biệt danh khác nhé." };
+  const student = await createStudent(username, nickname, password);
+  if (student === "taken") return { error: "Tài khoản này đã có người dùng. Em chọn tên tài khoản khác nhé." };
   await startSession(student.id);
   redirect(nextPath(form));
 }

@@ -94,14 +94,15 @@ export default function SurveySubmit({
         </label>
       ) : (
         <p className="survey-muted">
-          Em đã chọn ẩn danh hoàn toàn, nên chuyên viên không biết phiếu này là của ai. Nếu muốn được liên hệ, em có thể
-          quay lại Phần 1 và đổi câu cuối.
+          Em đã chọn ẩn danh hoàn toàn, nên phiếu không kèm họ tên hay cách liên lạc của em. Nếu muốn được liên hệ, em
+          có thể quay lại Phần 1 và đổi câu cuối.
         </p>
       )}
 
       {nickname ? (
         <p className="survey-muted">
-          Phiếu cũng được lưu vào tài khoản <strong>{nickname}</strong> để em xem lại kết quả sau này.
+          Phiếu được lưu vào tài khoản của em để em xem lại kết quả sau này. Chuyên viên sẽ thấy phiếu kèm biệt danh{" "}
+          <strong>{nickname}</strong> (không phải tên thật).
         </p>
       ) : (
         <p className="survey-muted">

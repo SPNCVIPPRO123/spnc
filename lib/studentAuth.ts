@@ -4,19 +4,31 @@ import { promisify } from "node:util";
 import { cookies } from "next/headers";
 import { ensureSchema, sql } from "@/lib/db";
 
-// Tài khoản học sinh: đăng nhập bằng biệt danh và mật khẩu. Mật khẩu được băm bằng scrypt trước khi lưu.
+// Tài khoản học sinh: đăng nhập bằng tài khoản (tên đăng nhập) và mật khẩu; biệt danh là tên hiện cho chuyên viên. Mật khẩu được băm bằng scrypt trước khi lưu.
 // Phiên đăng nhập lưu trong cơ sở dữ liệu; trình duyệt chỉ giữ một mã ngẫu nhiên trong cookie HttpOnly.
 
 export const STUDENT_COOKIE = "hs_session";
 const SESSION_DAYS = 30;
-export const NICKNAME_MIN = 3;
+export const USERNAME_MIN = 3;
+export const USERNAME_MAX = 30;
+export const NICKNAME_MIN = 2;
 export const NICKNAME_MAX = 30;
 export const STUDENT_PASSWORD_MIN = 8;
 
 const scryptAsync = promisify(scrypt) as (pw: string, salt: Buffer, len: number) => Promise<Buffer>;
 const sha256 = (s: string) => createHash("sha256").update(s).digest("hex");
 
-export type Student = { id: string; nickname: string };
+export type Student = { id: string; username: string; nickname: string };
+
+// Tài khoản: chữ không dấu, số và dấu _ . - (không khoảng trắng), không phân biệt hoa thường.
+export function cleanUsername(raw: unknown): string | null {
+  if (typeof raw !== "string") return null;
+  const name = raw.trim();
+  if (name.length < USERNAME_MIN || name.length > USERNAME_MAX) return null;
+  return /^[A-Za-z0-9_.\-]+$/.test(name) ? name : null;
+}
+
+const usernameKey = (name: string) => name.normalize("NFC").toLocaleLowerCase("vi");
 
 export function cleanNickname(raw: unknown): string | null {
   if (typeof raw !== "string") return null;
@@ -26,7 +38,6 @@ export function cleanNickname(raw: unknown): string | null {
   return /^[\p{L}\p{N} _.\-]+$/u.test(name) ? name : null;
 }
 
-const nicknameKey = (name: string) => name.toLocaleLowerCase("vi");
 
 async function hashPassword(password: string): Promise<string> {
   const salt = randomBytes(16);
@@ -47,23 +58,25 @@ async function db() {
   return sql;
 }
 
-export async function createStudent(nickname: string, password: string): Promise<Student | "taken"> {
+export async function createStudent(username: string, nickname: string, password: string): Promise<Student | "taken"> {
   const q = await db();
   const id = randomUUID();
   const rows = await q`
-    INSERT INTO students (id, nickname, nickname_key, password_hash)
-    VALUES (${id}, ${nickname}, ${nicknameKey(nickname)}, ${await hashPassword(password)})
-    ON CONFLICT (nickname_key) DO NOTHING
+    INSERT INTO students (id, username, username_key, nickname, nickname_key, password_hash)
+    VALUES (${id}, ${username}, ${usernameKey(username)}, ${nickname}, ${nickname.toLocaleLowerCase("vi")},
+            ${await hashPassword(password)})
+    ON CONFLICT (username_key) DO NOTHING
     RETURNING id`;
-  return rows.length ? { id, nickname } : "taken";
+  return rows.length ? { id, username, nickname } : "taken";
 }
 
-export async function findStudent(nickname: string, password: string): Promise<Student | null> {
+export async function findStudent(username: string, password: string): Promise<Student | null> {
   const q = await db();
-  const rows = await q`SELECT id, nickname, password_hash FROM students WHERE nickname_key = ${nicknameKey(nickname)}`;
-  const row = rows[0] as { id: string; nickname: string; password_hash: string } | undefined;
+  const rows = await q`
+    SELECT id, username, nickname, password_hash FROM students WHERE username_key = ${usernameKey(username)}`;
+  const row = rows[0] as (Student & { password_hash: string }) | undefined;
   if (!row || !(await checkHash(password, row.password_hash))) return null;
-  return { id: row.id, nickname: row.nickname };
+  return { id: row.id, username: row.username, nickname: row.nickname };
 }
 
 export async function startSession(studentId: string) {
@@ -87,7 +100,7 @@ export async function currentStudent(): Promise<Student | null> {
   if (!token) return null;
   const q = await db();
   const rows = await q`
-    SELECT s.id, s.nickname FROM student_sessions ss JOIN students s ON s.id = ss.student_id
+    SELECT s.id, s.username, s.nickname FROM student_sessions ss JOIN students s ON s.id = ss.student_id
     WHERE ss.token_hash = ${sha256(token)} AND ss.expires_at > now()`;
   return (rows[0] as Student | undefined) ?? null;
 }

@@ -76,7 +76,8 @@ export default async function StaffPage({ searchParams }: { searchParams: Promis
                 >
                   <div className="staff-row-top">
                     <strong>
-                      Lớp {String(row.answers.A1 ?? "?")} · {formatTime(row.created_at)}
+                      {row.nickname ? `${row.nickname} · ` : ""}Lớp {String(row.answers.A1 ?? "?")} ·{" "}
+                      {formatTime(row.created_at)}
                     </strong>
                     <StatusBadge status={row.status} />
                   </div>
@@ -87,7 +88,7 @@ export default async function StaffPage({ searchParams }: { searchParams: Promis
                         {DASS_INFO[k].name}: {LEVEL_LABELS[dass[k].level]}
                       </span>
                     ))}
-                    <span>{row.contact ? "Có để lại liên lạc" : "Ẩn danh"}</span>
+                    <span>{row.contact ? "Có để lại liên lạc" : "Không để lại liên lạc"}</span>
                   </div>
                 </Link>
               </li>

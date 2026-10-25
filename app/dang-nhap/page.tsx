@@ -18,7 +18,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         {student && (
           <div className="survey-card result-note login-current">
             <p>
-              Em đang đăng nhập với biệt danh <strong>{student.nickname}</strong>.{" "}
+              Em đang đăng nhập bằng tài khoản <strong>{student.username}</strong> (biệt danh {student.nickname}).{" "}
               <Link href="/tai-khoan">Xem tài khoản của em</Link>
             </p>
             <form action={studentLogout}>

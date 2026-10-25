@@ -20,7 +20,10 @@ export default async function AccountPage() {
         <div className="staff-head">
           <div>
             <h1>Chào {student.nickname}!</h1>
-            <p className="survey-muted">Đây là các lần khảo sát em đã gửi khi đăng nhập. Chỉ em xem được trang này.</p>
+            <p className="survey-muted">
+              Tài khoản: {student.username}. Đây là các lần khảo sát em đã gửi khi đăng nhập. Chuyên viên thấy phiếu kèm
+              biệt danh “{student.nickname}”.
+            </p>
           </div>
           <form action={studentLogout}>
             <button type="submit" className="btn btn-outline btn-sm">
@@ -69,8 +72,8 @@ export default async function AccountPage() {
           </summary>
           <form action={deleteAccount}>
             <p>
-              Xóa tài khoản và biệt danh của em? Em sẽ không xem lại được các lần khảo sát cũ. Phiếu đã gửi vẫn được giữ
-              (không kèm biệt danh) để chuyên viên hỗ trợ học sinh.
+              Xóa tài khoản của em? Em sẽ không xem lại được các lần khảo sát cũ. Phiếu đã gửi vẫn được giữ (không kèm biệt
+              danh nữa) để chuyên viên hỗ trợ học sinh.
             </p>
             <button type="submit" className="btn btn-sm staff-danger">
               Xóa tài khoản
