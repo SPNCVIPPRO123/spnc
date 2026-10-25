@@ -7,6 +7,7 @@ import { siteConfig } from "@/lib/siteConfig";
 import {
   SCALES,
   SECTIONS,
+  dropHiddenAnswers,
   missingQuestions,
   visibleQuestions,
   type Answer,
@@ -53,7 +54,7 @@ export default function Survey() {
     const saved = loadSaved();
     if (saved && saved.step !== "intro") {
       setStep(saved.step);
-      setAnswers(saved.answers);
+      setAnswers(dropHiddenAnswers(saved.answers));
     }
     setRestored(true);
   }, []);
@@ -73,7 +74,7 @@ export default function Survey() {
       const next = { ...prev };
       if (value === undefined) delete next[id];
       else next[id] = value;
-      return next;
+      return dropHiddenAnswers(next);
     });
     setMissing((m) => m.filter((x) => x !== id));
   }
@@ -196,10 +197,10 @@ function SectionStep({
           <span>
             Phần {index + 1}/{total}
           </span>
-          <span>{Math.round((index / total) * 100)}%</span>
+          <span>{Math.round(((index + 1) / total) * 100)}%</span>
         </div>
         <div className="survey-progress-bar">
-          <span style={{ width: `${(index / total) * 100}%` }} />
+          <span style={{ width: `${((index + 1) / total) * 100}%` }} />
         </div>
       </div>
 
