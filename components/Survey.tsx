@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ClipboardList, FlaskConical, Lock, Phone, ShieldCheck } from "lucide-react";
 import SurveyResults from "@/components/SurveyResults";
+import SurveySubmit, { clearSent, loadSent } from "@/components/SurveySubmit";
 import { siteConfig } from "@/lib/siteConfig";
 import {
   SCALES,
@@ -14,9 +15,10 @@ import {
   type Question,
 } from "@/lib/survey";
 
-type Step = "intro" | "declined" | "results" | number;
+type Step = "intro" | "declined" | "submit" | "results" | number;
 
-// Câu trả lời chỉ lưu tạm trong tab trình duyệt đang mở (mất khi đóng tab), không gửi đi đâu.
+// Câu trả lời đang làm dở được lưu tạm trong tab trình duyệt đang mở (mất khi đóng tab).
+// Phiếu chỉ được gửi tới chuyên viên khi em bấm gửi ở bước cuối (components/SurveySubmit.tsx).
 const STORAGE_KEY = "khao-sat-nhanh-v1";
 
 function loadSaved(): { step: Step; answers: Answers } | null {
@@ -47,6 +49,7 @@ export default function Survey() {
   const [answers, setAnswers] = useState<Answers>({});
   const [missing, setMissing] = useState<string[]>([]);
   const [restored, setRestored] = useState(false);
+  const [sendFailed, setSendFailed] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -80,6 +83,7 @@ export default function Survey() {
 
   function restart() {
     clearSaved();
+    clearSent();
     setAnswers({});
     goTo("intro");
   }
@@ -91,7 +95,7 @@ export default function Survey() {
       document.getElementById(`q-${miss[0]}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
-    goTo(index + 1 < SECTIONS.length ? index + 1 : "results");
+    goTo(index + 1 < SECTIONS.length ? index + 1 : "submit");
   }
 
   if (!restored) return <div className="survey-shell" ref={topRef} />;
@@ -121,8 +125,24 @@ export default function Survey() {
         />
       )}
 
+      {step === "submit" && (
+        <SurveySubmit
+          answers={answers}
+          onBack={() => goTo(SECTIONS.length - 1)}
+          onDone={(sent) => {
+            setSendFailed(!sent);
+            goTo("results");
+          }}
+        />
+      )}
+
       {step === "results" && (
-        <SurveyResults answers={answers} onEdit={() => goTo(0)} onRestart={restart} />
+        <SurveyResults
+          answers={answers}
+          sent={!sendFailed && loadSent() !== null}
+          onEdit={() => goTo(0)}
+          onRestart={restart}
+        />
       )}
     </div>
   );
@@ -144,8 +164,9 @@ function Intro({ onAgree, onDecline }: { onAgree: () => void; onDecline: () => v
           <ClipboardList size={18} aria-hidden="true" /> 9 phần, khoảng 15–20 phút.
         </li>
         <li>
-          <Lock size={18} aria-hidden="true" /> Phiếu không hỏi họ tên. Câu trả lời chỉ dùng để tính kết quả ngay trên
-          máy của em, <strong>không được gửi cho ai</strong>, kể cả thầy cô hay chuyên viên.
+          <Lock size={18} aria-hidden="true" /> Phiếu không hỏi họ tên. Khi em bấm gửi ở cuối phiếu, câu trả lời được
+          chuyển tới <strong>chuyên viên tư vấn tâm lý của trường</strong> để hỗ trợ em khi cần. Bạn bè, bố mẹ hay thầy
+          cô khác không xem được. Em có thể chọn ẩn danh hoàn toàn hoặc để lại cách liên lạc.
         </li>
         <li>
           <ShieldCheck size={18} aria-hidden="true" /> Kết quả chỉ để tham khảo, không phải chẩn đoán. Nếu cần, em có thể
@@ -253,7 +274,7 @@ function SectionStep({
           <ArrowLeft size={18} aria-hidden="true" /> Quay lại
         </button>
         <button type="button" className="btn btn-primary" onClick={onNext}>
-          {index + 1 < total ? "Tiếp tục" : "Xem kết quả"} <ArrowRight size={18} aria-hidden="true" />
+          {index + 1 < total ? "Tiếp tục" : "Hoàn thành"} <ArrowRight size={18} aria-hidden="true" />
         </button>
       </div>
     </div>

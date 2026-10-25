@@ -57,10 +57,12 @@ function chatMessage(maxKey: DassKey | null, maxLevel: number, safety: boolean):
 
 export default function SurveyResults({
   answers,
+  sent,
   onEdit,
   onRestart,
 }: {
   answers: Answers;
+  sent: boolean;
   onEdit: () => void;
   onRestart: () => void;
 }) {
@@ -235,15 +237,21 @@ export default function SurveyResults({
         )}
       </div>
 
-      {wantsContact && (
-        <div className="survey-card result-note">
+      <div className="survey-card result-note">
+        {sent ? (
           <p>
-            Em đã chọn <strong>để lại cách liên lạc</strong>. Hiện website chưa gửi phiếu tới chuyên viên, nên em hãy{" "}
-            <strong>in kết quả này</strong> mang tới phòng tư vấn ({siteConfig.counselingRoom}) hoặc đặt lịch tham vấn để
-            được liên hệ.
+            Phiếu của em <strong>đã được gửi tới chuyên viên tư vấn của trường</strong>.
+            {wantsContact
+              ? " Nếu em đã ghi cách liên lạc, chuyên viên có thể liên hệ với em khi cần."
+              : " Em đã chọn ẩn danh, nên nếu muốn được hỗ trợ riêng, em hãy chủ động tới phòng tư vấn hoặc đặt lịch tham vấn."}
           </p>
-        </div>
-      )}
+        ) : (
+          <p>
+            Phiếu của em <strong>chưa được gửi</strong> tới chuyên viên. Em hãy <strong>in kết quả này</strong> mang tới
+            phòng tư vấn ({siteConfig.counselingRoom}) hoặc bấm “Xem lại câu trả lời” để thử gửi lại.
+          </p>
+        )}
+      </div>
 
       <div className="survey-card results-actions">
         <h3 className="results-title">Bước tiếp theo</h3>
@@ -267,8 +275,8 @@ export default function SurveyResults({
           </button>
         </div>
         <p className="survey-muted small">
-          Câu trả lời chỉ được lưu tạm trên trình duyệt này và tự xóa khi em đóng tab. Nếu dùng máy chung, hãy bấm “Xóa câu
-          trả lời” khi xong.
+          Trên máy này, câu trả lời chỉ được lưu tạm và tự xóa khi em đóng tab. Nếu dùng máy chung, hãy bấm “Xóa câu trả
+          lời” khi xong (phiếu đã gửi cho chuyên viên vẫn được giữ).
         </p>
       </div>
     </div>
