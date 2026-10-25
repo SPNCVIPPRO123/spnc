@@ -51,20 +51,3 @@ export async function isStaff(): Promise<boolean> {
   const given = Buffer.from(sig);
   return given.length === expected.length && timingSafeEqual(given, expected);
 }
-
-// Chặn dò mật khẩu: mỗi IP tối đa 5 lần sai trong 15 phút (đếm trong bộ nhớ của máy chủ).
-const FAIL_LIMIT = 5;
-const FAIL_WINDOW_MS = 15 * 60_000;
-const failures = new Map<string, number[]>();
-
-export function isLoginBlocked(ip: string): boolean {
-  const now = Date.now();
-  const recent = (failures.get(ip) ?? []).filter((t) => now - t < FAIL_WINDOW_MS);
-  failures.set(ip, recent);
-  return recent.length >= FAIL_LIMIT;
-}
-
-export function recordLoginFailure(ip: string) {
-  if (failures.size > 5000) failures.clear();
-  failures.set(ip, [...(failures.get(ip) ?? []), Date.now()]);
-}

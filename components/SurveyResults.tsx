@@ -64,13 +64,16 @@ function chatMessage(
 export default function SurveyResults({
   answers,
   sent,
+  date,
   onEdit,
   onRestart,
 }: {
   answers: Answers;
   sent: boolean;
-  onEdit: () => void;
-  onRestart: () => void;
+  date?: string; // ngày làm phiếu, khi xem lại phiếu cũ trong tài khoản
+  // Không có hai nút này khi xem lại phiếu cũ trong tài khoản.
+  onEdit?: () => void;
+  onRestart?: () => void;
 }) {
   const dass = scoreDass(answers);
   const safety = safetyConcern(answers);
@@ -84,7 +87,7 @@ export default function SurveyResults({
   const maxLevel = Math.max(...keys.map((k) => dass[k].level));
   const maxKey = maxLevel > 0 ? keys.reduce((a, b) => (dass[b].level > dass[a].level ? b : a)) : null;
   const elevated = keys.filter((k) => dass[k].level > 0);
-  const today = new Date().toLocaleDateString("vi-VN");
+  const today = date ?? new Date().toLocaleDateString("vi-VN");
 
   return (
     <div className="survey-results">
@@ -272,18 +275,22 @@ export default function SurveyResults({
             <Printer size={18} aria-hidden="true" /> In / lưu kết quả
           </button>
         </div>
-        <div className="results-secondary">
-          <button type="button" className="link-button" onClick={onEdit}>
-            <Pencil size={15} aria-hidden="true" /> Xem lại câu trả lời
-          </button>
-          <button type="button" className="link-button" onClick={onRestart}>
-            <RotateCcw size={15} aria-hidden="true" /> Xóa câu trả lời và làm lại
-          </button>
-        </div>
-        <p className="survey-muted small">
-          Trên máy này, câu trả lời chỉ được lưu tạm và tự xóa khi em đóng tab. Nếu dùng máy chung, hãy bấm “Xóa câu trả
-          lời” khi xong (phiếu đã gửi cho chuyên viên vẫn được giữ).
-        </p>
+        {onEdit && onRestart && (
+          <>
+            <div className="results-secondary">
+              <button type="button" className="link-button" onClick={onEdit}>
+                <Pencil size={15} aria-hidden="true" /> Xem lại câu trả lời
+              </button>
+              <button type="button" className="link-button" onClick={onRestart}>
+                <RotateCcw size={15} aria-hidden="true" /> Xóa câu trả lời và làm lại
+              </button>
+            </div>
+            <p className="survey-muted small">
+              Trên máy này, câu trả lời chỉ được lưu tạm và tự xóa khi em đóng tab. Nếu dùng máy chung, hãy bấm “Xóa câu
+              trả lời” khi xong (phiếu đã gửi cho chuyên viên vẫn được giữ).
+            </p>
+          </>
+        )}
       </div>
     </div>
   );

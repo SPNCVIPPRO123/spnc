@@ -1,9 +1,14 @@
 import { ClipboardList } from "lucide-react";
 import Survey from "@/components/Survey";
+import { currentStudent } from "@/lib/studentAuth";
 
 export const metadata = { title: "Khảo sát nhanh" };
 
-export default function SurveyPage() {
+export const dynamic = "force-dynamic";
+
+export default async function SurveyPage() {
+  // Lỗi cơ sở dữ liệu không được làm hỏng trang khảo sát: khi đó coi như chưa đăng nhập.
+  const student = await currentStudent().catch(() => null);
   return (
     <>
       <section className="page-hero tone-sun survey-hero">
@@ -21,7 +26,7 @@ export default function SurveyPage() {
 
       <section className="section survey-section">
         <div className="container">
-          <Survey />
+          <Survey nickname={student?.nickname} />
         </div>
       </section>
     </>

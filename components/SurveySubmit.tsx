@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ArrowLeft, Send } from "lucide-react";
 import { siteConfig } from "@/lib/siteConfig";
 import { CONTACT_MAX, wantsContact } from "@/lib/submission";
@@ -30,10 +31,12 @@ export function clearSent() {
 
 export default function SurveySubmit({
   answers,
+  nickname,
   onBack,
   onDone,
 }: {
   answers: Answers;
+  nickname?: string;
   onBack: () => void;
   onDone: (sent: boolean) => void;
 }) {
@@ -93,6 +96,18 @@ export default function SurveySubmit({
         <p className="survey-muted">
           Em đã chọn ẩn danh hoàn toàn, nên chuyên viên không biết phiếu này là của ai. Nếu muốn được liên hệ, em có thể
           quay lại Phần 1 và đổi câu cuối.
+        </p>
+      )}
+
+      {nickname ? (
+        <p className="survey-muted">
+          Phiếu cũng được lưu vào tài khoản <strong>{nickname}</strong> để em xem lại kết quả sau này.
+        </p>
+      ) : (
+        <p className="survey-muted">
+          Muốn lưu kết quả để xem lại sau?{" "}
+          <Link href="/dang-nhap?next=/khao-sat">Đăng nhập hoặc tạo tài khoản bằng biệt danh</Link> trước khi gửi (câu
+          trả lời của em vẫn được giữ).
         </p>
       )}
 
