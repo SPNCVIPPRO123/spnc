@@ -372,6 +372,23 @@ export function visibleQuestions(section: Section, answers: Answers): Question[]
   return section.groups.flatMap((g) => g.questions).filter((q) => !q.showIf || q.showIf(answers));
 }
 
+// Xóa câu trả lời của các câu điều kiện đang bị ẩn (ví dụ C5 khi C1–C4 đều "Không"),
+// để câu trả lời cũ không còn nằm lại trong phiếu.
+export function dropHiddenAnswers(answers: Answers): Answers {
+  let next = answers;
+  for (const s of SECTIONS)
+    for (const g of s.groups)
+      for (const q of g.questions) {
+        if (!q.showIf || q.showIf(next)) continue;
+        for (const id of [q.id, `${q.id}_khac`]) {
+          if (next[id] === undefined) continue;
+          if (next === answers) next = { ...answers };
+          delete next[id];
+        }
+      }
+  return next;
+}
+
 // Câu chọn một đáp án là bắt buộc; câu chọn nhiều thì không bắt buộc.
 export function missingQuestions(section: Section, answers: Answers): string[] {
   return visibleQuestions(section, answers)
@@ -413,9 +430,11 @@ export function scoreDass(answers: Answers): DassResult {
 }
 
 // Phần 8: có ít nhất một câu "Có" hoặc "Không muốn trả lời".
-export function safetyConcern(answers: Answers): { flagged: boolean; urgent: boolean } {
-  const flagged = SAFETY_IDS.some((id) => answers[id] === 1 || answers[id] === 9);
-  return { flagged, urgent: flagged && answers["C5"] === 1 };
+// declinedOnly: không có câu "Có", chỉ có câu "Không muốn trả lời".
+export function safetyConcern(answers: Answers): { flagged: boolean; urgent: boolean; declinedOnly: boolean } {
+  const saidYes = SAFETY_IDS.some((id) => answers[id] === 1);
+  const flagged = saidYes || SAFETY_IDS.some((id) => answers[id] === 9);
+  return { flagged, urgent: flagged && answers["C5"] === 1, declinedOnly: flagged && !saidYes };
 }
 
 // Các câu về bạo lực, xâm hại (theo danh sách câu nhạy cảm trong ghi chú của phiếu).
