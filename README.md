@@ -5,7 +5,7 @@ Website giúp học sinh:
 1. **Tìm hiểu** tâm lý học đường là gì.
 2. **Khảo sát nhanh** để tự nhìn lại tâm trạng của mình ✅ *(đã có, trang `/khao-sat`, bản thử nghiệm)*.
    Phiếu được gửi tới chuyên viên, xem ở trang riêng có mật khẩu `/chuyen-vien` ✅.
-   Học sinh có thể tạo tài khoản bằng biệt danh để xem lại kết quả các lần khảo sát (`/dang-nhap`, `/tai-khoan`) ✅.
+   Học sinh có thể tạo tài khoản (tài khoản + biệt danh) để xem lại kết quả các lần khảo sát (`/dang-nhap`, `/tai-khoan`) ✅.
 3. **Tham vấn trực tuyến** với chuyên viên tâm lý của trường, có thể **ẩn danh** *(đang xây dựng)*.
 4. **Trò chuyện với chatbot AI** "Bạn Đồng Hành" ✅ *(đã có)*.
 5. **Tin tức** tự động cập nhật mỗi giờ từ trang của Bộ GD&ĐT ✅ *(đã có, trang `/tin-tuc`)*.
@@ -104,9 +104,9 @@ sau 8 giờ; nhập sai 5 lần phải chờ 15 phút; dữ liệu phiếu chỉ
 công cụ tìm kiếm lập chỉ mục. Phiếu không hỏi họ tên, không lưu IP; cách liên lạc chỉ được lưu khi học sinh tự chọn để lại.
 Đổi mật khẩu (sửa `STAFF_PASSWORD` rồi Redeploy) sẽ đăng xuất mọi người.
 
-**Tài khoản học sinh:** ở cùng trang Đăng nhập, học sinh tạo tài khoản bằng biệt danh và mật khẩu (không hỏi họ tên, email hay
-số điện thoại). Khi đã đăng nhập, phiếu em gửi được lưu vào tài khoản để em xem lại ở `/tai-khoan`; chuyên viên không thấy biệt
-danh. Mật khẩu được băm bằng scrypt; quên mật khẩu thì không lấy lại được. Học sinh có thể tự xóa tài khoản.
+**Tài khoản học sinh:** ở cùng trang Đăng nhập, học sinh tạo tài khoản gồm tên tài khoản (để đăng nhập), biệt danh và mật khẩu
+(không hỏi họ tên, email hay số điện thoại). Khi đã đăng nhập, phiếu em gửi được lưu vào tài khoản để em xem lại ở `/tai-khoan`;
+chuyên viên thấy phiếu kèm biệt danh (không thấy tên tài khoản). Mật khẩu được băm bằng scrypt; quên mật khẩu thì không lấy lại được. Học sinh có thể tự xóa tài khoản.
 
 > ⚠️ Đây là dữ liệu nhạy cảm của học sinh dưới 18 tuổi. Trước khi cho học sinh làm thật, hãy hỏi giảng viên và nhà trường về
 > việc xin đồng ý của phụ huynh, ai được giữ mật khẩu, phiếu được giữ bao lâu, và quy trình khi có phiếu cảnh báo C5.

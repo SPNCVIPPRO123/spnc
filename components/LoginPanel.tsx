@@ -64,8 +64,16 @@ function StudentLoginForm({ next, onRegister }: { next?: string; onRegister: () 
     <form onSubmit={onSubmit} className="login-form">
       <p className="survey-muted">Đăng nhập để xem lại kết quả các lần khảo sát của em.</p>
       {next && <input type="hidden" name="next" value={next} />}
-      <label htmlFor="hs-nickname">Biệt danh của em</label>
-      <input id="hs-nickname" name="nickname" className="survey-text" autoComplete="username" required />
+      <label htmlFor="hs-username">Tài khoản</label>
+      <input
+        id="hs-username"
+        name="username"
+        className="survey-text"
+        autoComplete="username"
+        autoCapitalize="none"
+        spellCheck={false}
+        required
+      />
       <label htmlFor="hs-password">Mật khẩu</label>
       <PasswordInput id="hs-password" name="password" autoComplete="current-password" />
       <ErrorText state={state} />
@@ -87,19 +95,35 @@ function StudentRegisterForm({ next }: { next?: string }) {
   return (
     <form onSubmit={onSubmit} className="login-form">
       <p className="survey-muted">
-        Tài khoản giúp em lưu và xem lại kết quả các lần khảo sát. Em <strong>không cần</strong> ghi họ tên thật, chỉ
-        cần một biệt danh em nhớ được. Chuyên viên không thấy biệt danh của em.
+        Tài khoản giúp em lưu và xem lại kết quả các lần khảo sát. Em <strong>không cần</strong> ghi họ tên thật.
+        Khi em gửi phiếu, chuyên viên sẽ thấy <strong>biệt danh</strong> của em, không thấy tên tài khoản hay mật
+        khẩu.
       </p>
       {next && <input type="hidden" name="next" value={next} />}
-      <label htmlFor="dk-nickname">Nhập biệt danh của em</label>
+      <label htmlFor="dk-username">Tài khoản (dùng để đăng nhập)</label>
+      <input
+        id="dk-username"
+        name="username"
+        className="survey-text"
+        autoComplete="username"
+        autoCapitalize="none"
+        spellCheck={false}
+        minLength={3}
+        maxLength={30}
+        pattern="[A-Za-z0-9_.\-]+"
+        title="Chữ không dấu, số hoặc dấu _ . - (không có khoảng trắng)"
+        placeholder="Ví dụ: meomuop2009"
+        required
+      />
+      <label htmlFor="dk-nickname">Nhập biệt danh của em (chuyên viên sẽ thấy tên này)</label>
       <input
         id="dk-nickname"
         name="nickname"
         className="survey-text"
-        autoComplete="username"
-        minLength={3}
+        autoComplete="nickname"
+        minLength={2}
         maxLength={30}
-        placeholder="Ví dụ: MèoMướp2009"
+        placeholder="Ví dụ: Mèo Mướp"
         required
       />
       <label htmlFor="dk-password">Mật khẩu (ít nhất 8 ký tự)</label>

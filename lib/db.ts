@@ -41,6 +41,12 @@ export function ensureSchema(): Promise<void> {
         password_hash TEXT NOT NULL,
         created_at TIMESTAMPTZ NOT NULL DEFAULT now()
       )`;
+    // Đăng nhập bằng "tài khoản" (username); biệt danh là tên hiện cho chuyên viên, có thể trùng nhau.
+    await sql`ALTER TABLE students ADD COLUMN IF NOT EXISTS username TEXT`;
+    await sql`ALTER TABLE students ADD COLUMN IF NOT EXISTS username_key TEXT`;
+    await sql`UPDATE students SET username = nickname, username_key = nickname_key WHERE username_key IS NULL`;
+    await sql`CREATE UNIQUE INDEX IF NOT EXISTS students_username_key_idx ON students (username_key)`;
+    await sql`ALTER TABLE students DROP CONSTRAINT IF EXISTS students_nickname_key_key`;
     await sql`
       CREATE TABLE IF NOT EXISTS student_sessions (
         token_hash TEXT PRIMARY KEY,

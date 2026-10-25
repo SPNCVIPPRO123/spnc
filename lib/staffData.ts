@@ -15,6 +15,7 @@ export type SubmissionRow = {
   updated_at: string | Date;
   answers: Answers;
   contact: string | null;
+  nickname: string | null; // biệt danh, khi học sinh gửi phiếu lúc đang đăng nhập
   urgent: boolean;
   safety: boolean;
   protection: boolean;
@@ -37,10 +38,12 @@ export async function listSubmissions(filter: Filter, page: number) {
   const newOnly = filter === "moi";
   // Phiếu chưa xử lý có cảnh báo luôn nằm trên cùng: C5 "Có" trước, rồi các cảnh báo khác.
   const rows = (await q`
-    SELECT id, created_at, updated_at, answers, contact, urgent, safety, protection, status
-    FROM survey_submissions
-    WHERE (${!alertsOnly} OR urgent OR safety OR protection) AND (${!newOnly} OR status = 'moi')
-    ORDER BY (status = 'moi' AND urgent) DESC, (status = 'moi' AND (safety OR protection)) DESC, created_at DESC
+    SELECT ss.id, ss.created_at, ss.updated_at, ss.answers, ss.contact, ss.urgent, ss.safety, ss.protection, ss.status,
+           st.nickname
+    FROM survey_submissions ss LEFT JOIN students st ON st.id = ss.student_id
+    WHERE (${!alertsOnly} OR ss.urgent OR ss.safety OR ss.protection) AND (${!newOnly} OR ss.status = 'moi')
+    ORDER BY (ss.status = 'moi' AND ss.urgent) DESC, (ss.status = 'moi' AND (ss.safety OR ss.protection)) DESC,
+             ss.created_at DESC
     LIMIT ${PAGE_SIZE + 1} OFFSET ${offset}`) as SubmissionRow[];
   const [counts] = await q`
     SELECT count(*)::int AS total,
@@ -58,8 +61,10 @@ export async function listSubmissions(filter: Filter, page: number) {
 export async function getSubmission(id: string): Promise<SubmissionRow | null> {
   const q = await db();
   const rows = (await q`
-    SELECT id, created_at, updated_at, answers, contact, urgent, safety, protection, status
-    FROM survey_submissions WHERE id = ${id}`) as SubmissionRow[];
+    SELECT ss.id, ss.created_at, ss.updated_at, ss.answers, ss.contact, ss.urgent, ss.safety, ss.protection, ss.status,
+           st.nickname
+    FROM survey_submissions ss LEFT JOIN students st ON st.id = ss.student_id
+    WHERE ss.id = ${id}`) as SubmissionRow[];
   return rows[0] ?? null;
 }
 

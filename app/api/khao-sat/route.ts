@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 
 // Nhận phiếu khảo sát học sinh gửi lên và lưu vào cơ sở dữ liệu để chuyên viên xem ở trang /chuyen-vien.
 // Không lưu địa chỉ IP hay thông tin trình duyệt. Chỉ lưu câu trả lời, cách liên lạc (nếu học sinh tự để lại), thời gian gửi
-// và tài khoản của em nếu em đang đăng nhập (để em xem lại kết quả; chuyên viên không thấy biệt danh).
+// và tài khoản của em nếu em đang đăng nhập (để em xem lại kết quả; chuyên viên thấy biệt danh của em).
 
 const MAX_BODY = 50_000; // byte
 const RATE_LIMIT = 10; // số lần gửi tối đa…
