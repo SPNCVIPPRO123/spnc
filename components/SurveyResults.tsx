@@ -46,8 +46,14 @@ const TIPS: Record<DassKey, string[]> = {
   ],
 };
 
-function chatMessage(maxKey: DassKey | null, maxLevel: number, safety: boolean): string {
-  if (safety) return "Mình vừa làm khảo sát nhanh và có lúc mình nghĩ đến chuyện không muốn sống nữa.";
+function chatMessage(
+  maxKey: DassKey | null,
+  maxLevel: number,
+  safety: { flagged: boolean; declinedOnly: boolean },
+): string {
+  if (safety.declinedOnly)
+    return "Mình vừa làm khảo sát nhanh. Có vài câu về những suy nghĩ nặng nề mình chưa muốn trả lời, nhưng mình muốn có người trò chuyện.";
+  if (safety.flagged) return "Mình vừa làm khảo sát nhanh và có lúc mình nghĩ đến chuyện không muốn sống nữa.";
   if (!maxKey || maxLevel === 0)
     return "Mình vừa làm khảo sát nhanh, kết quả khá ổn. Mình muốn biết cách giữ tinh thần tốt.";
   return `Mình vừa làm khảo sát nhanh, kết quả cho thấy mức ${DASS_INFO[maxKey].name.toLowerCase()} của mình đang ${LEVEL_LABELS[
@@ -259,7 +265,7 @@ export default function SurveyResults({
           <Link className="btn btn-primary" href={siteConfig.counselingPath}>
             <HeartHandshake size={18} aria-hidden="true" /> Đặt lịch tham vấn
           </Link>
-          <OpenChatButton className="btn btn-soft" message={chatMessage(maxKey, maxLevel, safety.flagged)}>
+          <OpenChatButton className="btn btn-soft" message={chatMessage(maxKey, maxLevel, safety)}>
             <MessageCircleHeart size={18} aria-hidden="true" /> Kể với {siteConfig.botName}
           </OpenChatButton>
           <button type="button" className="btn btn-outline" onClick={() => window.print()}>
