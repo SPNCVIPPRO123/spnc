@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
-import { BarChart3, CalendarHeart, ChevronLeft, ChevronRight, MessageCircleHeart, Trash2 } from "lucide-react";
+import { BarChart3, CalendarHeart, ChevronLeft, ChevronRight, Lock, MessageCircleHeart, Trash2 } from "lucide-react";
 import { deleteMoodEntry, saveMoodEntry } from "@/app/nhat-ky/actions";
 import { OpenChatButton } from "@/components/ChatWidget";
 import MoodBlob from "@/components/MoodBlob";
@@ -167,7 +167,7 @@ export default function MoodDiary({
                 style={e ? { background: MOOD_BY_KEY[e.mood].soft } : undefined}
               >
                 <span className="diary-num">{n}</span>
-                {e ? <MoodBlob mood={e.mood} size={46} /> : !future && <span className="diary-plus">+</span>}
+                {e ? <MoodBlob mood={e.mood} size={46} /> : day === today && <span className="diary-plus">+</span>}
                 {e?.note && <span className="diary-has-note" aria-hidden="true" />}
               </button>
             );
@@ -188,8 +188,33 @@ export default function MoodDiary({
           {!selected ? (
             <div className="diary-day-empty">
               <CalendarHeart size={32} aria-hidden="true" />
-              <p>Chọn một ngày trên lịch để ghi lại cảm xúc của em.</p>
+              <p>Nhật ký chỉ ghi được cho hôm nay. Em bấm vào ngày cũ để xem lại nhé.</p>
             </div>
+          ) : selected !== today ? (
+            <>
+              <h2>{dayTitle(selected, today)}</h2>
+              <div className="diary-big">
+                {saved ? (
+                  <MoodBlob mood={saved.mood} size={120} />
+                ) : (
+                  <div className="diary-big-empty" aria-hidden="true">
+                    ?
+                  </div>
+                )}
+                <span className="diary-big-label" style={saved ? { background: MOOD_BY_KEY[saved.mood].soft } : undefined}>
+                  {saved ? MOOD_BY_KEY[saved.mood].label : "Ngày này em chưa ghi"}
+                </span>
+              </div>
+              {saved?.note && <p className="diary-note-view">{saved.note}</p>}
+              <p className="diary-lock">
+                <Lock size={14} aria-hidden="true" /> Ngày đã qua chỉ xem lại được. Nhật ký chỉ ghi trong đúng ngày hôm nay.
+              </p>
+              {today.startsWith(month) && (
+                <button type="button" className="btn btn-soft btn-sm" onClick={() => pick(today)}>
+                  Ghi cho hôm nay
+                </button>
+              )}
+            </>
           ) : (
             <>
               <h2>{dayTitle(selected, today)}</h2>

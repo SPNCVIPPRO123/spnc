@@ -34,7 +34,7 @@ export default async function DiaryPage({ searchParams }: { searchParams: Promis
         <div className="diary-intro">
           <h1>Nhật ký cảm xúc của {student.nickname}</h1>
           <p className="survey-muted">
-            Mỗi ngày chọn một bạn nhỏ giống cảm xúc của em và viết vài dòng nếu muốn. Nhật ký chỉ mình em xem được, chuyên
+            Mỗi ngày chọn một bạn nhỏ giống cảm xúc của em và viết vài dòng nếu muốn. Em chỉ ghi được cho đúng ngày hôm nay, ngày đã qua thì xem lại được. Nhật ký chỉ mình em xem được, chuyên
             viên và thầy cô không đọc được.
           </p>
         </div>

@@ -8,9 +8,11 @@ export type DiaryResult = { ok: true } | { ok: false; error: string };
 
 const LOGGED_OUT = "Phiên đăng nhập đã hết. Em hãy đăng nhập lại nhé.";
 const FAILED = "Chưa lưu được, em thử lại sau một chút nhé.";
+// Nhật ký chỉ ghi, sửa hoặc xóa trong đúng ngày hôm nay (giờ Việt Nam); ngày đã qua chỉ xem lại.
+const ONLY_TODAY = "Nhật ký chỉ ghi được cho hôm nay. Ngày đã qua em chỉ xem lại được thôi.";
 
 export async function saveMoodEntry(day: unknown, mood: unknown, note: unknown): Promise<DiaryResult> {
-  if (!isDay(day) || day > vnToday()) return { ok: false, error: "Chỉ ghi được cho hôm nay hoặc những ngày đã qua." };
+  if (!isDay(day) || day !== vnToday()) return { ok: false, error: ONLY_TODAY };
   if (!isMoodKey(mood)) return { ok: false, error: "Em hãy chọn một cảm xúc." };
   const text = typeof note === "string" ? note.normalize("NFC").trim().slice(0, NOTE_MAX) : "";
   try {
@@ -24,7 +26,7 @@ export async function saveMoodEntry(day: unknown, mood: unknown, note: unknown):
 }
 
 export async function deleteMoodEntry(day: unknown): Promise<DiaryResult> {
-  if (!isDay(day)) return { ok: false, error: FAILED };
+  if (!isDay(day) || day !== vnToday()) return { ok: false, error: ONLY_TODAY };
   try {
     const student = await currentStudent();
     if (!student) return { ok: false, error: LOGGED_OUT };

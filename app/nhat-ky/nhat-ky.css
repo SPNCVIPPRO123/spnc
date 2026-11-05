@@ -364,3 +364,23 @@
     position: static;
   }
 }
+.diary-note-view {
+  margin: 0 0 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #faf9fe;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.diary-lock {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.diary-lock svg {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
