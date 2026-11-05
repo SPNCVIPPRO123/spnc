@@ -3307,3 +3307,154 @@ button.cal-cell:hover {
     display: none;
   }
 }
+
+/* ---------- Phòng gọi video ---------- */
+.call-shell {
+  max-width: 1080px;
+}
+.call-notice {
+  max-width: 640px;
+}
+.call-entry {
+  margin: 10px 0 4px;
+}
+.call-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.call-head h1 {
+  margin: 0 0 4px;
+}
+.call-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-height: 72vh;
+  width: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #10232a;
+  box-shadow: var(--shadow);
+}
+.call-remote {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #0b1a1f;
+}
+.call-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  color: #e9f7f2;
+  text-align: center;
+  font-size: 1.05rem;
+}
+.call-placeholder p {
+  margin: 0;
+  max-width: 34em;
+}
+.call-tip {
+  font-size: 0.92rem;
+  color: #cfeee4;
+}
+.call-local {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 24%;
+  min-width: 110px;
+  max-width: 260px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transform: scaleX(-1);
+  border-radius: var(--radius-sm);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  background: #1d3640;
+  box-shadow: var(--shadow-sm);
+}
+.call-local.is-off {
+  opacity: 0.35;
+}
+.call-problem {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--sun-bg);
+  color: var(--sun-fg);
+}
+.call-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px 0 10px;
+}
+.call-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+.call-btn:hover:not(:disabled) {
+  background: var(--tint);
+}
+.call-btn.is-off {
+  background: var(--coral-bg);
+  color: var(--coral-fg);
+  border-color: transparent;
+}
+.call-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.call-leave {
+  background: #d64528;
+  color: #fff;
+}
+.call-leave:hover {
+  background: #b9381f;
+}
+@media (max-width: 640px) {
+  .call-remote {
+    object-fit: cover;
+  }
+  .call-local {
+    width: 32%;
+    min-width: 90px;
+    right: 10px;
+    bottom: 10px;
+  }
+}
+/* Trong phòng gọi, ẩn nút trò chuyện nổi để không che hình. */
+body:has(.call) .chat-launcher {
+  display: none;
+}
+@media (max-width: 640px) {
+  .call-head h1 {
+    font-size: 1.6rem;
+  }
+  .call-head .survey-muted {
+    font-size: 0.92rem;
+  }
+  .call-stage {
+    aspect-ratio: auto;
+    height: max(300px, calc(100svh - 330px));
+    max-height: none;
+  }
+}
