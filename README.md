@@ -111,6 +111,25 @@ chuyên viên thấy phiếu kèm biệt danh (không thấy tên tài khoản).
 > ⚠️ Đây là dữ liệu nhạy cảm của học sinh dưới 18 tuổi. Trước khi cho học sinh làm thật, hãy hỏi giảng viên và nhà trường về
 > việc xin đồng ý của phụ huynh, ai được giữ mật khẩu, phiếu được giữ bao lâu, và quy trình khi có phiếu cảnh báo C5.
 
+## Gọi video với chuyên viên
+
+Lịch hẹn **trực tuyến** đã được chuyên viên xác nhận có nút **Vào phòng gọi video** (ở `/dat-lich` cho học sinh và
+`/chuyen-vien/lich-hen` cho chuyên viên). Phòng mở trước giờ hẹn 10 phút và đóng 30 phút sau khi hết giờ (sửa trong `lib/videoCall.ts`).
+Chỉ học sinh đã đặt lịch đó (đang đăng nhập) và chuyên viên đang đăng nhập mới vào được; lịch bị hủy hoặc đánh dấu đã tư vấn thì phòng đóng ngay.
+
+Cuộc gọi chạy thẳng trong trình duyệt (WebRTC), không cần cài ứng dụng hay tạo tài khoản dịch vụ nào. Web chỉ chuyển giúp vài
+tin “bắt tay” qua cơ sở dữ liệu; hình và tiếng đi thẳng giữa hai máy, không qua máy chủ của web và không được ghi lại.
+
+**Nếu gọi không nối được** (thường do wifi trường hoặc công ty chặn nối thẳng), bật thêm máy chủ chuyển tiếp TURN miễn phí của
+Cloudflare (1000 GB mỗi tháng, đủ cho rất nhiều buổi tư vấn):
+1. Tạo tài khoản miễn phí ở <https://dash.cloudflare.com/sign-up> (chỉ cần email).
+2. Trong trang quản lý, ở menu bên trái chọn **Realtime** (có nơi ghi là **Calls**) → **TURN Server** → **Create**, đặt tên bất kỳ.
+3. Cloudflare hiện **Turn Token ID** và **API Token**: sao chép cả hai (API Token chỉ hiện một lần).
+4. Trên Vercel: **Settings → Environment Variables** → thêm `CLOUDFLARE_TURN_KEY_ID` = Turn Token ID và
+   `CLOUDFLARE_TURN_API_TOKEN` = API Token → **Redeploy**.
+
+Không đặt hai biến này thì web vẫn gọi được, chỉ là ở vài mạng khó sẽ không nối được.
+
 ## Chi phí
 
 Mỗi tin nhắn tốn một khoản nhỏ tiền API, tuỳ độ dài cuộc trò chuyện. Để giảm chi phí:

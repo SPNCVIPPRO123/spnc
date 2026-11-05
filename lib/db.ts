@@ -74,6 +74,20 @@ export function ensureSchema(): Promise<void> {
       )`;
     await sql`CREATE INDEX IF NOT EXISTS appointments_starts_idx ON appointments (starts_at)`;
     await sql`CREATE INDEX IF NOT EXISTS appointments_student_idx ON appointments (student_id)`;
+    // Tin nhắn bắt tay của cuộc gọi video (WebRTC). Chỉ chứa thông tin kết nối, không chứa hình hay tiếng;
+    // hình và tiếng đi thẳng giữa hai máy. Tin cũ được xóa tự động.
+    await sql`
+      CREATE TABLE IF NOT EXISTS call_signals (
+        id BIGSERIAL PRIMARY KEY,
+        appointment_id TEXT NOT NULL REFERENCES appointments(id) ON DELETE CASCADE,
+        sender TEXT NOT NULL,
+        sid TEXT NOT NULL,
+        target TEXT,
+        kind TEXT NOT NULL,
+        payload JSONB,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+      )`;
+    await sql`CREATE INDEX IF NOT EXISTS call_signals_appt_idx ON call_signals (appointment_id, id)`;
   })().catch((err) => {
     ready = null;
     throw err;

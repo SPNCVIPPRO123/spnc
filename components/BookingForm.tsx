@@ -37,7 +37,7 @@ export default function BookingForm({ days }: { days: BookingDay[] }) {
             <span>
               <MessagesSquare size={22} aria-hidden="true" />
               <b>Trực tuyến</b>
-              <small>Gọi video hoặc nhắn tin với chuyên viên. Chuyên viên sẽ gửi đường link khi xác nhận lịch.</small>
+              <small>Gọi video với chuyên viên ngay trên web. Khi lịch được xác nhận, đến giờ em bấm Vào phòng gọi video.</small>
             </span>
           </label>
           <label className="booking-mode">

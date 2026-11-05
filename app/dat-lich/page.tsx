@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CalendarCheck, CalendarPlus, CalendarX2, CheckCircle2, MessageSquareText } from "lucide-react";
+import { CalendarCheck, CalendarPlus, CalendarX2, CheckCircle2, MessageSquareText, Video } from "lucide-react";
 import BookingForm, { type BookingDay } from "@/components/BookingForm";
 import { hasDatabase } from "@/lib/db";
 import {
@@ -16,6 +16,7 @@ import {
 } from "@/lib/booking";
 import { ownAppointments, takenSlots } from "@/lib/bookingData";
 import { currentStudent } from "@/lib/studentAuth";
+import { callTiming, opensAtLabel } from "@/lib/videoCall";
 import { cancelBooking } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -89,6 +90,22 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
                   <span>{MODE_LABELS[a.mode]}</span>
                   {a.mode === "offline" && <span>{BOOKING.offlinePlace}</span>}
                 </div>
+                {a.mode === "online" && a.status === "xac-nhan" && callTiming(a.starts_at, now) !== "het" && (
+                  <p className="call-entry">
+                    {callTiming(a.starts_at, now) === "mo" ? (
+                      <Link href={`/goi-video/${a.id}`} className="btn btn-primary btn-sm">
+                        <Video size={16} aria-hidden="true" /> Vào phòng gọi video
+                      </Link>
+                    ) : (
+                      <Link href={`/goi-video/${a.id}`} className="btn btn-outline btn-sm">
+                        <Video size={16} aria-hidden="true" /> Phòng gọi video mở lúc {opensAtLabel(a.starts_at)}
+                      </Link>
+                    )}
+                  </p>
+                )}
+                {a.mode === "online" && a.status === "cho" && (
+                  <p className="survey-muted small">Khi chuyên viên xác nhận, nút vào phòng gọi video sẽ hiện ở đây.</p>
+                )}
                 {a.staff_note && (
                   <p className="staff-contact">
                     <MessageSquareText size={15} aria-hidden="true" /> Chuyên viên nhắn: <strong>{a.staff_note}</strong>

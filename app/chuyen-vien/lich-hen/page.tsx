@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowLeft, Check, CheckCheck, X } from "lucide-react";
+import { ArrowLeft, Check, CheckCheck, Video, X } from "lucide-react";
 import StaffSetupNotice from "@/components/StaffSetupNotice";
 import { formatTime } from "@/components/StaffBadges";
 import { hasDatabase } from "@/lib/db";
 import { isStaff, isStaffConfigured } from "@/lib/staffAuth";
 import { BOOKING, MODE_LABELS, STAFF_NOTE_MAX, STATUS_LABELS, formatSlot } from "@/lib/booking";
 import { listAppointments, type StaffFilter } from "@/lib/bookingData";
+import { callTiming, opensAtLabel } from "@/lib/videoCall";
 import { updateAppointment } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -94,6 +95,22 @@ export default async function StaffAppointmentsPage({ searchParams }: { searchPa
                     "Học sinh không để lại cách liên lạc: hãy nhắn qua ô bên dưới, học sinh sẽ thấy trên trang Đặt lịch."
                   )}
                 </p>
+                {a.mode === "online" && a.status === "xac-nhan" && callTiming(a.starts_at, now) !== "het" && (
+                  <p className="call-entry">
+                    <Link
+                      href={`/goi-video/${a.id}?vai=cv`}
+                      className={`btn btn-sm ${callTiming(a.starts_at, now) === "mo" ? "btn-primary" : "btn-outline"}`}
+                    >
+                      <Video size={16} aria-hidden="true" />{" "}
+                      {callTiming(a.starts_at, now) === "mo"
+                        ? "Vào phòng gọi video"
+                        : `Phòng gọi video mở lúc ${opensAtLabel(a.starts_at)}`}
+                    </Link>
+                  </p>
+                )}
+                {a.mode === "online" && a.status === "cho" && (
+                  <p className="survey-muted small">Xác nhận lịch thì học sinh và chuyên viên mới vào được phòng gọi video.</p>
+                )}
                 {a.note && (
                   <p className="booking-note">
                     Học sinh chia sẻ trước: <em>{a.note}</em>
@@ -102,7 +119,7 @@ export default async function StaffAppointmentsPage({ searchParams }: { searchPa
                 <form action={updateAppointment} className="booking-staff-form">
                   <input type="hidden" name="id" value={a.id} />
                   <input type="hidden" name="loc" value={filter} />
-                  <label htmlFor={`note-${a.id}`}>Lời nhắn cho học sinh (link họp trực tuyến, đổi phòng, lý do hủy…)</label>
+                  <label htmlFor={`note-${a.id}`}>Lời nhắn cho học sinh (đổi phòng, lý do hủy, link họp khác nếu không dùng phòng gọi của web…)</label>
                   <textarea
                     id={`note-${a.id}`}
                     name="staff_note"
