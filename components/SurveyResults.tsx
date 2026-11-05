@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import {
   HeartHandshake,
@@ -67,6 +68,7 @@ export default function SurveyResults({
   date,
   onEdit,
   onRestart,
+  extra,
 }: {
   answers: Answers;
   sent: boolean;
@@ -74,6 +76,7 @@ export default function SurveyResults({
   // Không có hai nút này khi xem lại phiếu cũ trong tài khoản.
   onEdit?: () => void;
   onRestart?: () => void;
+  extra?: ReactNode; // khung mời để lại liên lạc (components/ContactPrompt.tsx), hiện sau các cảnh báo
 }) {
   const dass = scoreDass(answers);
   const safety = safetyConcern(answers);
@@ -139,6 +142,8 @@ export default function SurveyResults({
           </div>
         </div>
       )}
+
+      {extra}
 
       <div className="survey-card">
         <h3 className="results-title">Cảm xúc của em trong 7 ngày qua</h3>

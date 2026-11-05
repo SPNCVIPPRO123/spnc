@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ClipboardList, FlaskConical, Lock, Phone, ShieldCheck } from "lucide-react";
+import ContactPrompt from "@/components/ContactPrompt";
 import SurveyResults from "@/components/SurveyResults";
 import SurveySubmit, { clearSent, loadSent } from "@/components/SurveySubmit";
 import { siteConfig } from "@/lib/siteConfig";
@@ -10,6 +11,7 @@ import {
   SECTIONS,
   dropHiddenAnswers,
   missingQuestions,
+  safetyConcern,
   visibleQuestions,
   type Answer,
   type Answers,
@@ -144,6 +146,11 @@ export default function Survey({ nickname }: { nickname?: string }) {
           sent={!sendFailed && loadSent() !== null}
           onEdit={() => goTo(0)}
           onRestart={restart}
+          extra={
+            !sendFailed && loadSent() ? (
+              <ContactPrompt answers={answers} urgent={safetyConcern(answers).urgent} />
+            ) : undefined
+          }
         />
       )}
     </div>

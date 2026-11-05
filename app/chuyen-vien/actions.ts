@@ -1,12 +1,11 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { COOKIE_NAME, COOKIE_PATH, isStaff } from "@/lib/staffAuth";
+import { clearStaffCookie, isStaff } from "@/lib/staffAuth";
 import { deleteSubmission, updateStatus, type Status } from "@/lib/staffData";
 
 export async function logout() {
-  (await cookies()).delete({ name: COOKIE_NAME, path: COOKIE_PATH });
+  await clearStaffCookie();
   redirect("/dang-nhap?vai=chuyen-vien");
 }
 

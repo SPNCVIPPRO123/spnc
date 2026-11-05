@@ -6,8 +6,11 @@ import { cookies } from "next/headers";
 // Mật khẩu chỉ được so sánh trên máy chủ. Sau khi đăng nhập, trình duyệt giữ một cookie đã ký (HttpOnly,
 // JavaScript trên trang không đọc được), hết hạn sau 8 giờ. Đổi mật khẩu sẽ đăng xuất mọi người.
 
-export const COOKIE_NAME = "cv_session";
-export const COOKIE_PATH = "/chuyen-vien";
+// Cookie dùng cho cả web (không chỉ /chuyen-vien) để menu biết chuyên viên đang đăng nhập và hiện nút Đăng xuất.
+export const COOKIE_NAME = "cv_sess";
+export const COOKIE_PATH = "/";
+// Cookie của bản cũ (chỉ ở /chuyen-vien) không còn được dùng; khi đăng xuất thì xóa luôn cho sạch.
+const LEGACY_COOKIE = { name: "cv_session", path: "/chuyen-vien" };
 export const SESSION_HOURS = 8;
 export const MIN_PASSWORD_LENGTH = 10;
 
@@ -37,6 +40,12 @@ export function createSessionValue(): { value: string; expires: Date } {
   if (!p) throw new Error("Chưa đặt STAFF_PASSWORD");
   const expires = Date.now() + SESSION_HOURS * 3600_000;
   return { value: `${expires}.${sign(expires, p)}`, expires: new Date(expires) };
+}
+
+export async function clearStaffCookie() {
+  const jar = await cookies();
+  jar.delete({ name: COOKIE_NAME, path: COOKIE_PATH });
+  if (jar.has(LEGACY_COOKIE.name)) jar.delete(LEGACY_COOKIE);
 }
 
 export async function isStaff(): Promise<boolean> {

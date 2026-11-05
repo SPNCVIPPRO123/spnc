@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { FileSpreadsheet, LogOut } from "lucide-react";
 import StaffSetupNotice from "@/components/StaffSetupNotice";
 import { AlertBadges, StatusBadge, formatTime } from "@/components/StaffBadges";
 import { hasDatabase } from "@/lib/db";
 import { isStaff, isStaffConfigured } from "@/lib/staffAuth";
 import { listSubmissions, type Filter } from "@/lib/staffData";
+import { supportLevel } from "@/lib/supportLevel";
 import { DASS_INFO, LEVEL_LABELS, scoreDass, type DassKey } from "@/lib/survey";
 import { logout } from "./actions";
 
@@ -43,12 +44,25 @@ export default async function StaffPage({ searchParams }: { searchParams: Promis
             {counts.alerts > 0 && <> · {counts.alerts} phiếu có cảnh báo chưa xử lý</>}
           </p>
         </div>
-        <form action={logout}>
-          <button type="submit" className="btn btn-outline btn-sm">
-            <LogOut size={16} aria-hidden="true" /> Đăng xuất
-          </button>
-        </form>
+        <div className="staff-head-actions">
+          {/* Thẻ <a> thường (không phải Link) để trình duyệt tải file. */}
+          <a className="btn btn-primary btn-sm" href="/chuyen-vien/xuat-excel" download>
+            <FileSpreadsheet size={16} aria-hidden="true" /> Xuất Excel liên lạc
+          </a>
+          <a className="btn btn-outline btn-sm" href="/chuyen-vien/xuat-excel?loai=tat-ca" download>
+            <FileSpreadsheet size={16} aria-hidden="true" /> Xuất tất cả phiếu
+          </a>
+          <form action={logout}>
+            <button type="submit" className="btn btn-outline btn-sm">
+              <LogOut size={16} aria-hidden="true" /> Đăng xuất
+            </button>
+          </form>
+        </div>
       </div>
+      <p className="survey-muted small staff-export-note">
+        File Excel có thông tin liên lạc của học sinh: chỉ lưu trên máy của chuyên viên, không gửi qua nhóm chat, và xóa
+        khi không cần nữa.
+      </p>
 
       <nav className="staff-filters" aria-label="Lọc phiếu">
         {FILTERS.map((f) => (
@@ -88,7 +102,16 @@ export default async function StaffPage({ searchParams }: { searchParams: Promis
                         {DASS_INFO[k].name}: {LEVEL_LABELS[dass[k].level]}
                       </span>
                     ))}
-                    <span>{row.contact ? "Có để lại liên lạc" : "Không để lại liên lạc"}</span>
+                    {!row.urgent && supportLevel(row.answers).high && (
+                      <span className="dass-chip level-3">Cần liên hệ sớm</span>
+                    )}
+                    <span>
+                      {row.contact
+                        ? row.contact_later
+                          ? "Có để lại liên lạc (ở khung mời sau kết quả)"
+                          : "Có để lại liên lạc"
+                        : "Không để lại liên lạc"}
+                    </span>
                   </div>
                 </Link>
               </li>

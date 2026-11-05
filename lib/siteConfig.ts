@@ -8,6 +8,16 @@ export const siteConfig = {
   // Cách liên hệ phòng tham vấn tâm lý của trường (hiển thị cho học sinh).
   counselingRoom: "Phòng Tham vấn tâm lý – tầng 2, nhà A (giờ hành chính các ngày trong tuần)",
 
+  // Cách liên lạc với chuyên viên, hiện trong khung mời để lại liên lạc sau khi làm khảo sát.
+  // Ô nào để trống ("") thì không hiện. Đây là sản phẩm nghiên cứu, nên đang dùng thông tin giả định (demo: true
+  // hiện thêm dòng "thông tin minh họa"); khi dùng thật thì điền số, email, Zalo thật và đặt demo: false.
+  contact: {
+    phone: "0900 000 000" as string,
+    email: "tuvan.hocduong@example.com" as string,
+    zalo: "0900 000 000" as string,
+    demo: true as boolean,
+  },
+
   // Đường dẫn tới các chức năng khác của web. Khi làm xong trang nào thì đổi đường dẫn ở đây.
   surveyPath: "/khao-sat",
   counselingPath: "/tham-van",
