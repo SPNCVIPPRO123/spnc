@@ -56,7 +56,6 @@ export type Section = {
   intro?: string;
   scale?: ScaleId; // thang chung của cả phần, hiện chú thích ở đầu phần
   groups: { heading?: string; scale?: ScaleId; questions: Question[] }[];
-  note?: string;
 };
 
 const scaleQs = (scale: ScaleId, items: [string, string][]): Question[] =>
@@ -168,8 +167,8 @@ export const SECTIONS: Section[] = [
     title: "Cảm xúc của em trong 7 ngày qua",
     intro:
       "Hãy đọc từng câu và chọn 0, 1, 2 hoặc 3 cho biết câu đó đúng với em đến mức nào trong 7 ngày qua. Không có câu trả lời đúng hay sai. Đừng dừng quá lâu ở một câu.",
+    // Thang DASS-21 (Lovibond & Lovibond, 1995). Không hiện tên thang cho học sinh.
     scale: "dass4",
-    note: "Phần này dùng thang DASS-21 (Lovibond & Lovibond, 1995).",
     groups: [
       {
         questions: scaleQs("dass4", [
