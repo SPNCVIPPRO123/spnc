@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CalendarCheck, EyeOff, HeartHandshake, MessageCircleHeart, MessagesSquare, School, ShieldCheck } from "lucide-react";
 import { OpenChatButton } from "@/components/ChatWidget";
 import { siteConfig } from "@/lib/siteConfig";
@@ -17,13 +18,13 @@ const OPTIONS = [
     tone: "sky",
     title: "Trực tuyến – có đặt lịch",
     text: "Chọn thời gian phù hợp để trò chuyện riêng với chuyên viên.",
-    status: "Sắp ra mắt",
+    status: "Đang hoạt động",
   },
   {
     icon: School,
     tone: "mint",
     title: "Gặp trực tiếp",
-    text: siteConfig.counselingRoom,
+    text: `${siteConfig.counselingRoom}. Có thể đặt lịch trước.`,
     status: "Đang hoạt động",
   },
 ];
@@ -34,7 +35,6 @@ const STEPS = [
   { icon: MessageCircleHeart, title: "Trò chuyện", text: "Chuyên viên lắng nghe, không phán xét và cùng bạn tìm hướng đi." },
 ];
 
-// Trang tạm — sẽ thay bằng chức năng đặt lịch tham vấn trực tuyến (có tuỳ chọn ẩn danh) ở bước sau.
 export default function CounselingPage() {
   return (
     <>
@@ -67,6 +67,13 @@ export default function CounselingPage() {
                 <p>{text}</p>
               </article>
             ))}
+          </div>
+
+          <div className="booking-cta">
+            <Link href="/dat-lich" className="btn btn-primary btn-lg">
+              <CalendarCheck size={20} aria-hidden="true" /> Đặt lịch hẹn tư vấn
+            </Link>
+            <p className="survey-muted small">Chọn trực tuyến hoặc gặp trực tiếp, chọn ngày giờ (có cả buổi tối). Cần đăng nhập tài khoản học sinh.</p>
           </div>
 
           <div className="section-head section-head-spaced">

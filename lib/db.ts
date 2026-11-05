@@ -58,6 +58,22 @@ export function ensureSchema(): Promise<void> {
     // Liên lạc học sinh để lại ở khung mời sau khi xem kết quả (kể cả khi lúc đầu chọn ẩn danh).
     await sql`ALTER TABLE survey_submissions ADD COLUMN IF NOT EXISTS contact_later BOOLEAN NOT NULL DEFAULT false`;
     await sql`ALTER TABLE survey_submissions ADD COLUMN IF NOT EXISTS contact_at TIMESTAMPTZ`;
+    // Lịch hẹn tư vấn: học sinh đặt khi đã đăng nhập, chuyên viên xác nhận hoặc hủy.
+    await sql`
+      CREATE TABLE IF NOT EXISTS appointments (
+        id TEXT PRIMARY KEY,
+        student_id TEXT REFERENCES students(id) ON DELETE CASCADE,
+        starts_at TIMESTAMPTZ NOT NULL,
+        mode TEXT NOT NULL,
+        contact TEXT,
+        note TEXT,
+        status TEXT NOT NULL DEFAULT 'cho',
+        staff_note TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+      )`;
+    await sql`CREATE INDEX IF NOT EXISTS appointments_starts_idx ON appointments (starts_at)`;
+    await sql`CREATE INDEX IF NOT EXISTS appointments_student_idx ON appointments (student_id)`;
   })().catch((err) => {
     ready = null;
     throw err;

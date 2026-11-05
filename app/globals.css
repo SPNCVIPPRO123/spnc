@@ -3019,3 +3019,156 @@ button {
 .account-diary-link:hover strong {
   color: var(--brand);
 }
+
+/* Đặt lịch hẹn tư vấn */
+.inline-icon {
+  vertical-align: -4px;
+  color: var(--brand);
+}
+.booking-form {
+  gap: 18px;
+}
+.booking-step {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.booking-step legend {
+  font-weight: 800;
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+.booking-modes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+.booking-mode input {
+  position: absolute;
+  opacity: 0;
+}
+.booking-mode span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+}
+.booking-mode span svg {
+  color: var(--brand);
+}
+.booking-mode small {
+  color: var(--muted);
+  font-weight: 400;
+}
+.booking-mode:hover span {
+  border-color: var(--brand-400);
+}
+.booking-mode input:checked + span {
+  border-color: var(--brand);
+  background: var(--brand-50);
+  box-shadow: 0 0 0 1px var(--brand);
+}
+.booking-mode input:focus-visible + span {
+  outline: 3px solid var(--brand-400);
+  outline-offset: 2px;
+}
+.booking-days,
+.booking-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.booking-days input,
+.booking-times input {
+  position: absolute;
+  opacity: 0;
+}
+.booking-form .survey-opt input:disabled + span {
+  opacity: 0.45;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+.booking-period + .booking-period {
+  margin-top: 6px;
+}
+.booking-period-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.booking-done {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 12px 0;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: var(--mint-bg);
+  color: var(--mint-fg);
+}
+.booking-done p {
+  margin: 0;
+}
+.booking-row .staff-contact {
+  margin: 0;
+}
+.booking-note {
+  margin: 0;
+  color: var(--ink-2);
+}
+.booking-staff-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.booking-staff-form label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.booking-staff-form .survey-text {
+  margin-top: 0;
+}
+.staff-badge.booking-status-cho {
+  background: var(--sun-bg);
+  color: var(--sun-fg);
+}
+.staff-badge.booking-status-xac-nhan {
+  background: var(--sky-bg);
+  color: var(--sky-fg);
+}
+.staff-badge.booking-status-xong {
+  background: var(--mint-bg);
+  color: var(--mint-fg);
+}
+.staff-badge.booking-status-huy,
+.staff-badge.booking-status-hs-huy {
+  background: var(--coral-bg);
+  color: var(--coral-fg);
+}
+.booking-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 24px 0 8px;
+  text-align: center;
+}
+.account-booking-link {
+  background: linear-gradient(90deg, var(--brand-50), var(--sky-bg));
+}
+.account-booking-link svg {
+  color: var(--brand);
+}
