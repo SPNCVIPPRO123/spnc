@@ -37,7 +37,7 @@ Claude API → câu trả lời hiện dần trên màn hình
 | `app/page.tsx` | Nội dung trang chủ: tâm trạng, chủ đề, hiểu lầm, hỏi đáp (sửa chữ trong các danh sách ở đầu file) | ✅ Tuỳ ý |
 | `app/globals.css` | Giao diện: màu sắc, bo góc, bố cục (đổi màu chủ đạo ở các biến `--brand-*` đầu file) | Tuỳ ý |
 | `components/` | Thanh menu, chân trang, logo, khung chat, thẻ tin tức | Tuỳ ý |
-| `lib/survey.ts` | Toàn bộ câu hỏi khảo sát (giữ mã câu như phiếu giấy) và cách tính kết quả DASS-21 | ✅ Sửa câu hỏi ở đây |
+| `lib/survey.ts` | Toàn bộ câu hỏi khảo sát (giữ mã câu như phiếu giấy) và cách tính kết quả DASS-21 (tên thang chỉ ghi trong mã, học sinh không thấy) | ✅ Sửa câu hỏi ở đây |
 | `lib/news.ts` | Tin tức tự động lấy từ Cổng thông tin CTXH & TVTL trường học (Bộ GD&ĐT), cập nhật mỗi giờ; đổi các mục tin ở `NEWS_CATEGORIES` | Tuỳ ý |
 | `app/api/chat/route.ts` | Phần máy chủ gọi AI | Chỉ sửa khi đã hiểu code |
 | `app/api/khao-sat/route.ts`, `lib/submission.ts`, `lib/db.ts` | Nhận phiếu học sinh gửi, kiểm tra và lưu vào cơ sở dữ liệu | Chỉ sửa khi đã hiểu code |

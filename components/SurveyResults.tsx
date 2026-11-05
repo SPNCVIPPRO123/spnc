@@ -164,7 +164,7 @@ export default function SurveyResults({
           ))}
         </div>
         <p className="survey-muted small">
-          Tính theo thang DASS-21 (Lovibond &amp; Lovibond, 1995). Mức độ: {LEVEL_LABELS.join(" → ")}.
+          Mức độ, từ thấp đến cao: {LEVEL_LABELS.join(" → ")}.
         </p>
       </div>
 

@@ -269,7 +269,6 @@ function SectionStep({
           </div>
         )}
 
-        {section.note && <p className="survey-muted small">{section.note}</p>}
       </div>
 
       {missing.length > 0 && (

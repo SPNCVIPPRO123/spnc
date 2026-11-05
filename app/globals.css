@@ -3003,3 +3003,19 @@ button {
     margin-left: 4px;
   }
 }
+.account-diary-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: var(--ink);
+  background: linear-gradient(90deg, #fdeef5, #eef1ff);
+}
+.account-diary-link svg {
+  flex-shrink: 0;
+  color: #d0487a;
+}
+.account-diary-link:hover strong {
+  color: var(--brand);
+}

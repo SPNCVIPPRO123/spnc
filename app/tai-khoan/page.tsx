@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ClipboardList, LogOut, Trash2 } from "lucide-react";
+import { CalendarHeart, ClipboardList, LogOut, Trash2 } from "lucide-react";
 import { formatTime } from "@/components/StaffBadges";
 import { currentStudent, ownSubmissions } from "@/lib/studentAuth";
 import { DASS_INFO, LEVEL_LABELS, scoreDass, type Answers, type DassKey } from "@/lib/survey";
@@ -31,6 +31,14 @@ export default async function AccountPage() {
             </button>
           </form>
         </div>
+
+        <Link href="/nhat-ky" className="survey-card account-diary-link">
+          <CalendarHeart size={22} aria-hidden="true" />
+          <span>
+            <strong>Nhật ký cảm xúc</strong>
+            <span className="survey-muted"> · Ghi lại cảm xúc mỗi ngày, chỉ mình em xem được.</span>
+          </span>
+        </Link>
 
         {rows.length === 0 ? (
           <div className="survey-card survey-center">

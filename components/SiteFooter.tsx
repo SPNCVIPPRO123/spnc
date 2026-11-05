@@ -34,6 +34,9 @@ export default function SiteFooter() {
               <Link href={siteConfig.counselingPath}>Tham vấn ẩn danh</Link>
             </li>
             <li>
+              <Link href="/nhat-ky">Nhật ký cảm xúc</Link>
+            </li>
+            <li>
               <Link href="/tin-tuc">Tin tức</Link>
             </li>
             <li>
