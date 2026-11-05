@@ -20,6 +20,8 @@ export type SubmissionRow = {
   safety: boolean;
   protection: boolean;
   status: Status;
+  contact_later?: boolean; // liên lạc để lại ở khung mời sau kết quả
+  contact_at?: string | Date | null;
 };
 
 export const PAGE_SIZE = 50;
@@ -38,8 +40,8 @@ export async function listSubmissions(filter: Filter, page: number) {
   const newOnly = filter === "moi";
   // Phiếu chưa xử lý có cảnh báo luôn nằm trên cùng: C5 "Có" trước, rồi các cảnh báo khác.
   const rows = (await q`
-    SELECT ss.id, ss.created_at, ss.updated_at, ss.answers, ss.contact, ss.urgent, ss.safety, ss.protection, ss.status,
-           st.nickname
+    SELECT ss.id, ss.created_at, ss.updated_at, ss.answers, ss.contact, ss.contact_later, ss.urgent, ss.safety, ss.protection,
+           ss.status, st.nickname
     FROM survey_submissions ss LEFT JOIN students st ON st.id = ss.student_id
     WHERE (${!alertsOnly} OR ss.urgent OR ss.safety OR ss.protection) AND (${!newOnly} OR ss.status = 'moi')
     ORDER BY (ss.status = 'moi' AND ss.urgent) DESC, (ss.status = 'moi' AND (ss.safety OR ss.protection)) DESC,
@@ -76,4 +78,16 @@ export async function updateStatus(id: string, status: Status) {
 export async function deleteSubmission(id: string) {
   const q = await db();
   await q`DELETE FROM survey_submissions WHERE id = ${id}`;
+}
+
+// Dữ liệu cho file Excel: chỉ phiếu có để lại liên lạc (mặc định) hoặc mọi phiếu. Tối đa 5000 phiếu mới nhất.
+export async function exportSubmissions(withContactOnly: boolean): Promise<SubmissionRow[]> {
+  const q = await db();
+  return (await q`
+    SELECT ss.id, ss.created_at, ss.updated_at, ss.answers, ss.contact, ss.contact_later, ss.contact_at, ss.urgent,
+           ss.safety, ss.protection, ss.status, st.nickname
+    FROM survey_submissions ss LEFT JOIN students st ON st.id = ss.student_id
+    WHERE (${!withContactOnly} OR ss.contact IS NOT NULL)
+    ORDER BY (ss.status = 'moi' AND ss.urgent) DESC, ss.created_at DESC
+    LIMIT 5000`) as SubmissionRow[];
 }

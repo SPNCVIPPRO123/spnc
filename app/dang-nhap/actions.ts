@@ -4,7 +4,14 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { hasDatabase } from "@/lib/db";
 import { clientIp, isLoginBlocked, recordLoginFailure } from "@/lib/loginLimit";
-import { COOKIE_NAME, COOKIE_PATH, checkPassword, createSessionValue, isStaffConfigured } from "@/lib/staffAuth";
+import {
+  COOKIE_NAME,
+  COOKIE_PATH,
+  checkPassword,
+  clearStaffCookie,
+  createSessionValue,
+  isStaffConfigured,
+} from "@/lib/staffAuth";
 import {
   NICKNAME_MAX,
   NICKNAME_MIN,
@@ -104,6 +111,13 @@ export async function studentRegister(_prev: FormState, form: FormData): Promise
 
 export async function studentLogout() {
   await endSession();
+  redirect("/dang-nhap");
+}
+
+// Nút "Đăng xuất" trên menu: thoát cả tài khoản học sinh lẫn khu chuyên viên (máy dùng chung ở trường).
+export async function logoutEverywhere() {
+  await endSession();
+  await clearStaffCookie();
   redirect("/dang-nhap");
 }
 

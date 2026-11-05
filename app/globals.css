@@ -2814,3 +2814,192 @@ button {
     scroll-behavior: auto !important;
   }
 }
+
+/* Khung mời để lại liên lạc sau khảo sát (components/ContactPrompt.tsx) */
+.contact-card,
+.contact-dialog {
+  border: 1.5px solid #c9dcff;
+  background: var(--sky-bg);
+}
+.contact-card.is-high,
+.contact-dialog.is-high {
+  border-color: #ffcdbf;
+  background: #fff7f3;
+}
+.contact-card h3,
+.contact-dialog h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-size: 1.15rem;
+}
+.contact-card p,
+.contact-dialog p {
+  margin: 0 0 10px;
+}
+.contact-points {
+  margin: 0 0 12px;
+  padding-left: 22px;
+}
+.contact-points li {
+  margin-bottom: 4px;
+}
+.contact-form .survey-q {
+  display: block;
+  margin-bottom: 10px;
+  background: var(--surface);
+}
+.contact-form .survey-q span {
+  display: block;
+  font-weight: 600;
+}
+.contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.contact-error {
+  color: var(--coral-fg);
+  font-weight: 600;
+}
+.contact-saved {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--mint-bg);
+  color: var(--mint-fg);
+}
+.contact-saved svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.contact-saved p {
+  margin: 0;
+  color: var(--ink);
+}
+.contact-site {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-size: 0.95rem;
+}
+.contact-site ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+.contact-site li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.contact-site li svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--brand);
+}
+.contact-dialog {
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 26px 24px 22px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  color: var(--ink);
+}
+.contact-dialog::backdrop {
+  background: rgba(22, 48, 58, 0.45);
+}
+.contact-dialog h3 {
+  padding-right: 32px;
+}
+.contact-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+@media print {
+  .contact-card,
+  .contact-dialog {
+    display: none !important;
+  }
+}
+
+/* Nút đăng xuất trên menu */
+.nav-account {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.main-nav .nav-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.main-nav .nav-logout:hover {
+  background: var(--coral-bg);
+  color: var(--coral-fg);
+}
+@media (max-width: 900px) {
+  .nav-account {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .nav-account form {
+    display: flex;
+  }
+  .main-nav .nav-logout {
+    flex: 1;
+    padding: 12px 14px;
+  }
+}
+
+/* Nút xuất Excel ở trang chuyên viên */
+.staff-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+}
+.staff-export-note {
+  margin: -6px 0 16px;
+}
+.main-nav a,
+.main-nav .nav-logout,
+.nav-cta {
+  white-space: nowrap;
+}
+@media (min-width: 901px) and (max-width: 1240px) {
+  .main-nav a,
+  .main-nav .nav-logout {
+    padding: 8px 9px;
+    font-size: 0.92rem;
+  }
+  .nav-cta {
+    margin-left: 4px;
+  }
+}

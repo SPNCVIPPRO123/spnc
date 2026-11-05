@@ -55,6 +55,9 @@ export function ensureSchema(): Promise<void> {
       )`;
     await sql`ALTER TABLE survey_submissions ADD COLUMN IF NOT EXISTS student_id TEXT REFERENCES students(id) ON DELETE SET NULL`;
     await sql`CREATE INDEX IF NOT EXISTS survey_submissions_student_idx ON survey_submissions (student_id)`;
+    // Liên lạc học sinh để lại ở khung mời sau khi xem kết quả (kể cả khi lúc đầu chọn ẩn danh).
+    await sql`ALTER TABLE survey_submissions ADD COLUMN IF NOT EXISTS contact_later BOOLEAN NOT NULL DEFAULT false`;
+    await sql`ALTER TABLE survey_submissions ADD COLUMN IF NOT EXISTS contact_at TIMESTAMPTZ`;
   })().catch((err) => {
     ready = null;
     throw err;

@@ -23,6 +23,15 @@ export function loadSent(): Sent | null {
   }
 }
 
+// Ghi lại liên lạc học sinh vừa để lại ở khung mời sau kết quả, để lần "Xem lại câu trả lời" sau vẫn thấy.
+export function saveSentContact(contact: string) {
+  const sent = loadSent();
+  if (!sent) return;
+  try {
+    sessionStorage.setItem(SENT_KEY, JSON.stringify({ ...sent, contact }));
+  } catch {}
+}
+
 export function clearSent() {
   try {
     sessionStorage.removeItem(SENT_KEY);

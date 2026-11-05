@@ -70,7 +70,12 @@ export async function POST(req: Request) {
     if (typeof body.id === "string" && typeof body.token === "string") {
       const rows = await sql`
         UPDATE survey_submissions
-        SET answers = ${data}::jsonb, contact = ${contact}, urgent = ${safety.urgent}, safety = ${safety.flagged},
+        SET answers = ${data}::jsonb,
+            -- Liên lạc để lại ở khung mời sau kết quả được giữ, trừ khi em ghi cách liên lạc mới ở bước gửi phiếu.
+            contact = CASE WHEN ${contact}::text IS NULL AND contact_later THEN contact ELSE ${contact}::text END,
+            contact_later = contact_later AND ${contact}::text IS NULL,
+            contact_at = CASE WHEN ${contact}::text IS NULL THEN contact_at ELSE now() END,
+            urgent = ${safety.urgent}, safety = ${safety.flagged},
             protection = ${protection}, student_id = COALESCE(${studentId}, student_id), updated_at = now()
         WHERE id = ${body.id} AND edit_token_hash = ${hashToken(body.token)}
         RETURNING id`;
@@ -80,8 +85,9 @@ export async function POST(req: Request) {
     const id = randomUUID();
     const token = randomBytes(32).toString("base64url");
     await sql`
-      INSERT INTO survey_submissions (id, edit_token_hash, answers, contact, urgent, safety, protection, student_id)
-      VALUES (${id}, ${hashToken(token)}, ${data}::jsonb, ${contact}, ${safety.urgent}, ${safety.flagged}, ${protection}, ${studentId})`;
+      INSERT INTO survey_submissions (id, edit_token_hash, answers, contact, contact_at, urgent, safety, protection, student_id)
+      VALUES (${id}, ${hashToken(token)}, ${data}::jsonb, ${contact}, ${contact ? new Date() : null}, ${safety.urgent},
+              ${safety.flagged}, ${protection}, ${studentId})`;
     return json({ id, token });
   } catch (err) {
     console.error("[khao-sat] Lỗi lưu phiếu:", err);
