@@ -146,9 +146,7 @@ button {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(251, 250, 246, 0.85);
-  backdrop-filter: saturate(160%) blur(12px);
-  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  background: var(--bg);
   border-bottom: 1px solid rgba(227, 235, 231, 0.8);
 }
 .header-inner {
@@ -3171,4 +3169,141 @@ button {
 }
 .account-booking-link svg {
   color: var(--brand);
+}
+
+/* Lịch tháng ở trang đặt lịch */
+.cal {
+  max-width: 520px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+  background: var(--surface);
+}
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.cal-head strong {
+  font-size: 1.05rem;
+}
+.cal-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+.cal-nav:hover:not(:disabled) {
+  border-color: var(--brand-400);
+  color: var(--brand);
+}
+.cal-nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+.cal-weekday {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  padding: 4px 0;
+}
+.cal-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  min-height: 56px;
+  padding: 4px 2px;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  background: var(--brand-50);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.cal-cell b {
+  font-size: 1rem;
+}
+.cal-cell small {
+  font-size: 0.66rem;
+  line-height: 1.15;
+  color: var(--brand);
+  text-align: center;
+}
+button.cal-cell:hover {
+  border-color: var(--brand-400);
+}
+.cal-cell.is-today b {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cal-cell.is-selected {
+  background: var(--brand);
+  color: #fff;
+}
+.cal-cell.is-selected small {
+  color: #e9f7f2;
+}
+.cal-cell:focus-visible {
+  outline: 3px solid var(--brand-400);
+  outline-offset: 2px;
+}
+.cal-cell.is-off,
+.cal-cell.is-empty {
+  background: none;
+  cursor: default;
+}
+.cal-cell.is-off b {
+  color: #b3c0c8;
+  font-weight: 500;
+}
+.cal-cell.is-off small {
+  color: var(--muted);
+}
+.cal-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+}
+.cal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: var(--brand-50);
+  border: 1px solid var(--brand-100);
+}
+.booking-gcal {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+}
+@media (max-width: 480px) {
+  .cal {
+    padding: 8px;
+  }
+  .cal-cell {
+    min-height: 48px;
+  }
+  .cal-cell small {
+    font-size: 0.66rem;
+  }
+  .cal-free-word {
+    display: none;
+  }
 }

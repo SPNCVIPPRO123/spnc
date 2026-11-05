@@ -1,7 +1,7 @@
 "use client";
 
 import { startTransition, useActionState, useState, type FormEvent } from "react";
-import { CalendarCheck, MessagesSquare, Moon, School } from "lucide-react";
+import { CalendarCheck, ChevronLeft, ChevronRight, MessagesSquare, Moon, School } from "lucide-react";
 import { book, type BookState } from "@/app/dat-lich/actions";
 import { BOOKING, CONTACT_MAX, NOTE_MAX, slotPeriod, slotRange, type Mode } from "@/lib/booking";
 
@@ -53,27 +53,15 @@ export default function BookingForm({ days }: { days: BookingDay[] }) {
 
       <fieldset className="booking-step">
         <legend>2. Chọn ngày</legend>
-        <div className="booking-days">
-          {days.map((d) => {
-            const allFull = d.times.every((t) => t.full);
-            return (
-              <label key={d.date} className="survey-opt">
-                <input
-                  type="radio"
-                  name="date"
-                  value={d.date}
-                  checked={date === d.date}
-                  disabled={allFull}
-                  onChange={() => {
-                    setDate(d.date);
-                    setTime("");
-                  }}
-                />
-                <span>{d.label}</span>
-              </label>
-            );
-          })}
-        </div>
+        <MonthCalendar
+          days={days}
+          selected={date}
+          onSelect={(d) => {
+            setDate(d);
+            setTime("");
+          }}
+        />
+        <input type="hidden" name="date" value={date} />
       </fieldset>
 
       <fieldset className="booking-step">
@@ -136,5 +124,102 @@ export default function BookingForm({ days }: { days: BookingDay[] }) {
         <CalendarCheck size={18} aria-hidden="true" /> {pending ? "Đang gửi…" : "Đặt lịch hẹn"}
       </button>
     </form>
+  );
+}
+
+const WEEK_HEAD = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
+const MONTH_NAMES = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
+
+// Lịch tháng giống Google Calendar: ngày còn giờ trống bấm được, kèm số khung giờ còn trống.
+function MonthCalendar({
+  days,
+  selected,
+  onSelect,
+}: {
+  days: BookingDay[];
+  selected: string;
+  onSelect: (date: string) => void;
+}) {
+  const months = Array.from(new Set(days.map((d) => d.date.slice(0, 7))));
+  const [month, setMonth] = useState(selected.slice(0, 7) || months[0]);
+  const byDate = new Map(days.map((d) => [d.date, d]));
+  const today = days[0]?.date ?? "";
+  const [y, m] = month.split("-").map(Number);
+  const first = new Date(Date.UTC(y, m - 1, 1));
+  const lead = (first.getUTCDay() + 6) % 7; // số ô trống trước ngày 1 (tuần bắt đầu Thứ Hai)
+  const count = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  const cells: (string | null)[] = [
+    ...Array<null>(lead).fill(null),
+    ...Array.from({ length: count }, (_, i) => `${month}-${String(i + 1).padStart(2, "0")}`),
+  ];
+  while (cells.length % 7) cells.push(null);
+  const mi = months.indexOf(month);
+
+  return (
+    <div className="cal">
+      <div className="cal-head">
+        <button
+          type="button"
+          className="cal-nav"
+          aria-label="Tháng trước"
+          disabled={mi <= 0}
+          onClick={() => setMonth(months[mi - 1])}
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <strong>
+          {MONTH_NAMES[m - 1]}, {y}
+        </strong>
+        <button
+          type="button"
+          className="cal-nav"
+          aria-label="Tháng sau"
+          disabled={mi < 0 || mi >= months.length - 1}
+          onClick={() => setMonth(months[mi + 1])}
+        >
+          <ChevronRight size={20} />
+        </button>
+      </div>
+      <div className="cal-grid" role="grid" aria-label={`${MONTH_NAMES[m - 1]}, ${y}`}>
+        {WEEK_HEAD.map((w) => (
+          <span key={w} className="cal-weekday" role="columnheader">
+            {w}
+          </span>
+        ))}
+        {cells.map((date, i) => {
+          if (!date) return <span key={`e${i}`} className="cal-cell is-empty" />;
+          const day = byDate.get(date);
+          const free = day ? day.times.filter((t) => !t.full).length : 0;
+          const n = Number(date.slice(8));
+          if (!day || free === 0) {
+            return (
+              <span key={date} className={`cal-cell is-off ${date < today ? "is-past" : ""}`} aria-disabled="true">
+                <b>{n}</b>
+                {day && <small>Kín lịch</small>}
+              </span>
+            );
+          }
+          return (
+            <button
+              key={date}
+              type="button"
+              className={`cal-cell ${selected === date ? "is-selected" : ""} ${date === today ? "is-today" : ""}`}
+              aria-pressed={selected === date}
+              aria-label={`${day.label}, còn ${free} khung giờ`}
+              onClick={() => onSelect(date)}
+            >
+              <b>{n}</b>
+              <small>
+                {free}
+                <span className="cal-free-word"> giờ trống</span>
+              </small>
+            </button>
+          );
+        })}
+      </div>
+      <p className="cal-legend survey-muted small">
+        <span className="cal-dot" /> Ngày có thể đặt · ngày mờ là ngày không có tư vấn hoặc ngoài {BOOKING.daysAhead} ngày tới.
+      </p>
+    </div>
   );
 }
