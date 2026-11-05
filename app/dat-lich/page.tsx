@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CalendarCheck, CalendarX2, CheckCircle2, MessageSquareText } from "lucide-react";
+import { CalendarCheck, CalendarPlus, CalendarX2, CheckCircle2, MessageSquareText } from "lucide-react";
 import BookingForm, { type BookingDay } from "@/components/BookingForm";
 import { hasDatabase } from "@/lib/db";
 import {
@@ -11,6 +11,7 @@ import {
   bookableDays,
   dayLabel,
   formatSlot,
+  googleCalendarUrl,
   slotStart,
 } from "@/lib/booking";
 import { ownAppointments, takenSlots } from "@/lib/bookingData";
@@ -92,6 +93,16 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
                   <p className="staff-contact">
                     <MessageSquareText size={15} aria-hidden="true" /> Chuyên viên nhắn: <strong>{a.staff_note}</strong>
                   </p>
+                )}
+                {isActive(a) && (
+                  <a
+                    className="link-button booking-gcal"
+                    href={googleCalendarUrl(a.starts_at, a.mode, a.staff_note)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <CalendarPlus size={15} aria-hidden="true" /> Thêm vào Google Calendar
+                  </a>
                 )}
                 {isActive(a) && (
                   <details className="staff-delete">

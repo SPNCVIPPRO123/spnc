@@ -101,3 +101,26 @@ export function formatSlot(startsAt: string | Date): string {
   const vn = new Date(new Date(startsAt).getTime() + VN_OFFSET_MS).toISOString();
   return `${dayLabel(vn.slice(0, 10))} · ${slotRange(vn.slice(11, 16))}`;
 }
+
+// Đường link mở Google Calendar với sự kiện điền sẵn, để học sinh tự thêm lịch hẹn vào lịch của mình.
+// Không cần đăng nhập hay khóa API: Google chỉ mở trang tạo sự kiện, học sinh bấm Lưu.
+export function googleCalendarUrl(startsAt: string | Date, mode: Mode, staffNote?: string | null): string {
+  const start = new Date(startsAt);
+  const end = new Date(start.getTime() + BOOKING.durationMinutes * 60_000);
+  const fmt = (d: Date) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const details = [
+    `Buổi tư vấn tâm lý ${mode === "online" ? "trực tuyến" : "trực tiếp"} với chuyên viên (${siteConfig.siteName}).`,
+    staffNote ? `Lời nhắn của chuyên viên: ${staffNote}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: "Hẹn tư vấn tâm lý",
+    dates: `${fmt(start)}/${fmt(end)}`,
+    details,
+    ctz: "Asia/Ho_Chi_Minh",
+  });
+  if (mode === "offline") params.set("location", BOOKING.offlinePlace);
+  return `https://calendar.google.com/calendar/render?${params}`;
+}
