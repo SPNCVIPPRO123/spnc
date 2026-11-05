@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { FileSpreadsheet, LogOut } from "lucide-react";
+import { CalendarDays, FileSpreadsheet, LogOut } from "lucide-react";
 import StaffSetupNotice from "@/components/StaffSetupNotice";
 import { AlertBadges, StatusBadge, formatTime } from "@/components/StaffBadges";
 import { hasDatabase } from "@/lib/db";
 import { isStaff, isStaffConfigured } from "@/lib/staffAuth";
 import { listSubmissions, type Filter } from "@/lib/staffData";
 import { supportLevel } from "@/lib/supportLevel";
+import { waitingCount } from "@/lib/bookingData";
 import { DASS_INFO, LEVEL_LABELS, scoreDass, type DassKey } from "@/lib/survey";
 import { logout } from "./actions";
 
@@ -25,7 +26,7 @@ export default async function StaffPage({ searchParams }: { searchParams: Promis
   const params = await searchParams;
   const filter: Filter = FILTERS.some((f) => f.id === params.loc) ? (params.loc as Filter) : "tat-ca";
   const page = Math.max(1, Math.floor(Number(params.trang)) || 1);
-  const { rows, hasMore, counts } = await listSubmissions(filter, page);
+  const [{ rows, hasMore, counts }, waiting] = await Promise.all([listSubmissions(filter, page), waitingCount()]);
   const href = (f: Filter, p = 1) => `/chuyen-vien?loc=${f}${p > 1 ? `&trang=${p}` : ""}`;
 
   return (
@@ -45,6 +46,9 @@ export default async function StaffPage({ searchParams }: { searchParams: Promis
           </p>
         </div>
         <div className="staff-head-actions">
+          <Link href="/chuyen-vien/lich-hen" className="btn btn-soft btn-sm">
+            <CalendarDays size={16} aria-hidden="true" /> Lịch hẹn tư vấn{waiting > 0 ? ` (${waiting} chờ xác nhận)` : ""}
+          </Link>
           {/* Thẻ <a> thường (không phải Link) để trình duyệt tải file. */}
           <a className="btn btn-primary btn-sm" href="/chuyen-vien/xuat-excel" download>
             <FileSpreadsheet size={16} aria-hidden="true" /> Xuất Excel liên lạc
