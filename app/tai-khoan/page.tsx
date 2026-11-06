@@ -21,7 +21,7 @@ export default async function AccountPage() {
           <div>
             <h1>Chào {student.nickname}!</h1>
             <p className="survey-muted">
-              Tài khoản: {student.username}. Đây là các lần khảo sát em đã gửi khi đăng nhập. Chuyên viên thấy phiếu kèm
+              Đây là những lần khảo sát em đã gửi bằng tài khoản {student.username}. Chuyên viên chỉ thấy phiếu của em kèm
               biệt danh “{student.nickname}”.
             </p>
           </div>
@@ -44,7 +44,7 @@ export default async function AccountPage() {
           <CalendarCheck size={22} aria-hidden="true" />
           <span>
             <strong>Đặt lịch hẹn tư vấn</strong>
-            <span className="survey-muted"> · Trực tuyến hoặc gặp trực tiếp, chọn giờ phù hợp với em.</span>
+            <span className="survey-muted"> · Gọi video hoặc gặp trực tiếp chuyên viên, vào giờ em thấy tiện.</span>
           </span>
         </Link>
 
@@ -88,8 +88,8 @@ export default async function AccountPage() {
           </summary>
           <form action={deleteAccount}>
             <p>
-              Xóa tài khoản của em? Em sẽ không xem lại được các lần khảo sát cũ. Phiếu đã gửi vẫn được giữ (không kèm biệt
-              danh nữa) để chuyên viên hỗ trợ học sinh.
+              Xóa tài khoản của em? Em sẽ không xem lại được các lần khảo sát cũ. Những phiếu đã gửi vẫn được giữ
+              lại để chuyên viên hỗ trợ, nhưng sẽ không còn kèm biệt danh của em.
             </p>
             <button type="submit" className="btn btn-sm staff-danger">
               Xóa tài khoản

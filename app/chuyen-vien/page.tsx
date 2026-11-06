@@ -112,7 +112,7 @@ export default async function StaffPage({ searchParams }: { searchParams: Promis
                     <span>
                       {row.contact
                         ? row.contact_later
-                          ? "Có để lại liên lạc (ở khung mời sau kết quả)"
+                          ? "Để lại liên lạc ở khung mời sau kết quả"
                           : "Có để lại liên lạc"
                         : "Không để lại liên lạc"}
                     </span>

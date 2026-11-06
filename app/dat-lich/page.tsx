@@ -56,15 +56,15 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
           <CalendarCheck size={26} aria-hidden="true" className="inline-icon" /> Đặt lịch hẹn tư vấn
         </h1>
         <p className="survey-muted">
-          Chào {student.nickname}! Chuyên viên sẽ thấy lịch hẹn kèm biệt danh “{student.nickname}”, không thấy tên thật hay
-          tài khoản của em. Mỗi buổi khoảng {BOOKING.durationMinutes} phút.
+          Chào {student.nickname}! Mỗi buổi gặp kéo dài khoảng {BOOKING.durationMinutes} phút. Chuyên viên chỉ biết em qua
+          biệt danh “{student.nickname}”, không thấy tên thật hay tài khoản của em.
         </p>
 
         {params["da-dat"] && (
           <div className="booking-done" role="status">
             <CheckCircle2 size={22} aria-hidden="true" />
             <p>
-              Em đã đặt lịch xong. Chuyên viên sẽ xác nhận sớm; em xem trạng thái ở mục “Lịch hẹn của em” bên dưới.
+              Đặt lịch xong rồi! Chuyên viên sẽ sớm xác nhận, em theo dõi ở mục “Lịch hẹn của em” bên dưới nhé.
             </p>
           </div>
         )}
@@ -141,7 +141,7 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
         )}
 
         <p className="survey-muted small">
-          Nếu em đang gặp nguy hiểm hoặc cần giúp ngay, đừng chờ lịch hẹn: hãy gọi 111 (miễn phí, 24/7) hoặc{" "}
+          Nếu em đang gặp nguy hiểm hoặc cần giúp ngay, đừng đợi đến buổi hẹn. Hãy gọi ngay 111, miễn phí và có người nghe máy cả ngày lẫn đêm, hoặc{" "}
           <Link href="/tham-van">xem các cách liên hệ khác</Link>.
         </p>
       </div>

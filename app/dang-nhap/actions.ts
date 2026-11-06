@@ -40,7 +40,7 @@ function nextPath(form: FormData): string {
 }
 
 export async function staffLogin(_prev: FormState, form: FormData): Promise<FormState> {
-  if (!isStaffConfigured()) return { error: "Trang chưa được cài mật khẩu (biến STAFF_PASSWORD)." };
+  if (!isStaffConfigured()) return { error: "Khu vực chuyên viên chưa được cài đặt xong. Em nhờ người quản lý web kiểm tra giúp nhé." };
   const key = `cv:${await clientIp()}`;
   if (isLoginBlocked(key)) return { error: TOO_MANY };
 
@@ -89,7 +89,7 @@ export async function studentRegister(_prev: FormState, form: FormData): Promise
   const username = cleanUsername(form.get("username"));
   if (!username)
     return {
-      error: `Tài khoản cần dài ${USERNAME_MIN}–${USERNAME_MAX} ký tự, chỉ gồm chữ không dấu, số hoặc dấu _ . - (không có khoảng trắng).`,
+      error: `Tài khoản cần dài ${USERNAME_MIN}–${USERNAME_MAX} ký tự, viết liền, không dấu, chỉ dùng chữ, số và dấu _ . -`,
     };
   const nickname = cleanNickname(form.get("nickname"));
   if (!nickname)

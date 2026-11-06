@@ -43,8 +43,7 @@ export default async function StaffAppointmentsPage({ searchParams }: { searchPa
                 {" "}
                 · <strong className="staff-urgent-text">{counts.waiting} lịch chờ xác nhận</strong>
               </>
-            )}{" "}
-            · Khung giờ đặt và nơi gặp sửa trong <code>lib/booking.ts</code>.
+            )}
           </p>
         </div>
       </div>
@@ -119,7 +118,7 @@ export default async function StaffAppointmentsPage({ searchParams }: { searchPa
                 <form action={updateAppointment} className="booking-staff-form">
                   <input type="hidden" name="id" value={a.id} />
                   <input type="hidden" name="loc" value={filter} />
-                  <label htmlFor={`note-${a.id}`}>Lời nhắn cho học sinh (đổi phòng, lý do hủy, link họp khác nếu không dùng phòng gọi của web…)</label>
+                  <label htmlFor={`note-${a.id}`}>Lời nhắn cho học sinh, ví dụ đổi phòng, lý do hủy hay link họp khác nếu không dùng phòng gọi của web</label>
                   <textarea
                     id={`note-${a.id}`}
                     name="staff_note"

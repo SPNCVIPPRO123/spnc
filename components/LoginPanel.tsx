@@ -62,7 +62,7 @@ function StudentLoginForm({ next, onRegister }: { next?: string; onRegister: () 
   const { state, pending, onSubmit } = useLoginAction(studentLogin);
   return (
     <form onSubmit={onSubmit} className="login-form">
-      <p className="survey-muted">Đăng nhập để xem lại kết quả các lần khảo sát của em.</p>
+      <p className="survey-muted">Đăng nhập để xem lại kết quả khảo sát, viết nhật ký và đặt lịch hẹn của em.</p>
       {next && <input type="hidden" name="next" value={next} />}
       <label htmlFor="hs-username">Tài khoản</label>
       <input
@@ -95,12 +95,12 @@ function StudentRegisterForm({ next }: { next?: string }) {
   return (
     <form onSubmit={onSubmit} className="login-form">
       <p className="survey-muted">
-        Tài khoản giúp em lưu và xem lại kết quả các lần khảo sát. Em <strong>không cần</strong> ghi họ tên thật.
-        Khi em gửi phiếu, chuyên viên sẽ thấy <strong>biệt danh</strong> của em, không thấy tên tài khoản hay mật
-        khẩu.
+        Có tài khoản, em lưu được kết quả khảo sát, viết nhật ký cảm xúc và đặt lịch gặp chuyên viên. Em{" "}
+        <strong>không cần</strong> dùng tên thật đâu. Chuyên viên chỉ thấy <strong>biệt danh</strong> của em, không thấy
+        tên tài khoản hay mật khẩu.
       </p>
       {next && <input type="hidden" name="next" value={next} />}
-      <label htmlFor="dk-username">Tài khoản (dùng để đăng nhập)</label>
+      <label htmlFor="dk-username">Tài khoản để đăng nhập</label>
       <input
         id="dk-username"
         name="username"
@@ -111,11 +111,11 @@ function StudentRegisterForm({ next }: { next?: string }) {
         minLength={3}
         maxLength={30}
         pattern="[A-Za-z0-9_.\-]+"
-        title="Chữ không dấu, số hoặc dấu _ . - (không có khoảng trắng)"
+        title="Viết liền, không dấu, chỉ dùng chữ, số và dấu _ . -"
         placeholder="Ví dụ: meomuop2009"
         required
       />
-      <label htmlFor="dk-nickname">Nhập biệt danh của em (chuyên viên sẽ thấy tên này)</label>
+      <label htmlFor="dk-nickname">Biệt danh của em, chuyên viên sẽ gọi em bằng tên này</label>
       <input
         id="dk-nickname"
         name="nickname"
@@ -126,7 +126,7 @@ function StudentRegisterForm({ next }: { next?: string }) {
         placeholder="Ví dụ: Mèo Mướp"
         required
       />
-      <label htmlFor="dk-password">Mật khẩu (ít nhất 8 ký tự)</label>
+      <label htmlFor="dk-password">Mật khẩu, dài ít nhất 8 ký tự</label>
       <PasswordInput id="dk-password" name="password" autoComplete="new-password" minLength={8} />
       <label htmlFor="dk-password2">Nhập lại mật khẩu</label>
       <PasswordInput id="dk-password2" name="password2" autoComplete="new-password" minLength={8} />

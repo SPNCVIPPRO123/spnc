@@ -319,7 +319,7 @@ export default async function HomePage() {
                 <MessageCircleHeart size={28} aria-hidden="true" />
               </span>
               <h3>Trò chuyện với {siteConfig.botName}</h3>
-              <p>Trợ lý AI trả lời ngay, mọi lúc. Phù hợp khi bạn muốn tìm hiểu hoặc cần ai đó lắng nghe.</p>
+              <p>Trợ lý AI trả lời ngay, lúc nào cũng được. Hợp khi bạn muốn hỏi han điều gì đó, hay chỉ cần ai đó lắng nghe.</p>
               <OpenChatButton className="btn btn-primary">Bắt đầu trò chuyện</OpenChatButton>
             </article>
             <article className="step tone-sun">
@@ -328,7 +328,7 @@ export default async function HomePage() {
                 <ClipboardList size={28} aria-hidden="true" />
               </span>
               <h3>Làm khảo sát nhanh</h3>
-              <p>Khoảng 15 phút trả lời câu hỏi để nhìn lại cảm xúc gần đây và biết nên tìm hỗ trợ ở đâu.</p>
+              <p>Mất chừng 15 phút. Trả lời vài câu hỏi để nhìn lại cảm xúc dạo gần đây và biết nên tìm ai giúp.</p>
               <Link className="btn btn-outline" href={siteConfig.surveyPath}>
                 Làm khảo sát
               </Link>
@@ -339,7 +339,7 @@ export default async function HomePage() {
                 <HeartHandshake size={28} aria-hidden="true" />
               </span>
               <h3>Tham vấn với chuyên viên</h3>
-              <p>Trò chuyện trực tuyến với chuyên viên tâm lý của trường. Bạn có thể chọn ẩn danh.</p>
+              <p>Hẹn gọi video ngay trên web hoặc gặp trực tiếp chuyên viên tâm lý của trường. Chuyên viên chỉ biết bạn qua biệt danh.</p>
               <Link className="btn btn-outline" href={siteConfig.counselingPath}>
                 Đặt lịch tham vấn
               </Link>

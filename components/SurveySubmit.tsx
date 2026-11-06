@@ -90,7 +90,7 @@ export default function SurveySubmit({
       {askContact ? (
         <label className="survey-q">
           <span>
-            Em muốn chuyên viên liên lạc với em qua đâu? (ví dụ: họ tên và lớp, số điện thoại, email hoặc Zalo)
+            Em muốn chuyên viên liên lạc với em qua đâu? Em có thể ghi họ tên và lớp, số điện thoại, email hay Zalo.
           </span>
           <input
             className="survey-text"
@@ -98,7 +98,7 @@ export default function SurveySubmit({
             maxLength={CONTACT_MAX}
             value={contact}
             onChange={(e) => setContact(e.target.value)}
-            placeholder="Em ghi ở đây (không bắt buộc)"
+            placeholder="Không ghi cũng được"
           />
         </label>
       ) : (
@@ -110,22 +110,22 @@ export default function SurveySubmit({
 
       {nickname ? (
         <p className="survey-muted">
-          Phiếu được lưu vào tài khoản của em để em xem lại kết quả sau này. Chuyên viên sẽ thấy phiếu kèm biệt danh{" "}
-          <strong>{nickname}</strong> (không phải tên thật).
+          Phiếu được lưu vào tài khoản để em xem lại kết quả sau này. Chuyên viên chỉ thấy biệt danh{" "}
+          <strong>{nickname}</strong>, không biết tên thật của em.
         </p>
       ) : (
         <p className="survey-muted">
           Muốn lưu kết quả để xem lại sau?{" "}
-          <Link href="/dang-nhap?next=/khao-sat">Đăng nhập hoặc tạo tài khoản bằng biệt danh</Link> trước khi gửi (câu
-          trả lời của em vẫn được giữ).
+          <Link href="/dang-nhap?next=/khao-sat">Đăng nhập hoặc tạo tài khoản bằng biệt danh</Link> trước khi gửi. Đừng
+          lo, câu trả lời của em vẫn còn nguyên.
         </p>
       )}
 
       {state === "error" && (
         <div className="survey-support" role="alert">
           <p>
-            Chưa gửi được phiếu (có thể do mạng). Em thử gửi lại nhé. Nếu vẫn không được, em vẫn xem được kết quả và có
-            thể in mang tới phòng tư vấn ({siteConfig.counselingRoom}).
+            Chưa gửi được phiếu, có thể do mạng chập chờn. Em thử gửi lại nhé. Nếu vẫn không được, em vẫn xem được kết
+            quả và có thể in ra mang tới {siteConfig.counselingRoom}.
           </p>
         </div>
       )}

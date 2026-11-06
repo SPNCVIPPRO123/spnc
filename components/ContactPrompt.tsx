@@ -131,7 +131,7 @@ export default function ContactPrompt({ answers, urgent }: { answers: Answers; u
           </label>
           {state === "error" && (
             <p className="contact-error" role="alert">
-              Chưa lưu được (có thể do mạng). Em thử lại nhé.
+              Chưa lưu được, có thể do mạng chập chờn. Em thử lại nhé.
             </p>
           )}
           <div className="contact-buttons">

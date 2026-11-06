@@ -43,7 +43,7 @@ export default function SiteFooter() {
               <Link href="/#hoi-dap">Hỏi đáp</Link>
             </li>
             <li>
-              <Link href="/dang-nhap">Đăng nhập (học sinh, chuyên viên)</Link>
+              <Link href="/dang-nhap">Đăng nhập</Link>
             </li>
           </ul>
         </div>

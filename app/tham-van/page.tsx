@@ -17,21 +17,21 @@ const OPTIONS = [
     icon: MessagesSquare,
     tone: "sky",
     title: "Trực tuyến – có đặt lịch",
-    text: "Chọn thời gian phù hợp để trò chuyện riêng với chuyên viên.",
+    text: "Hẹn một giờ bạn rảnh rồi gọi video riêng với chuyên viên ngay trên web.",
     status: "Đang hoạt động",
   },
   {
     icon: School,
     tone: "mint",
     title: "Gặp trực tiếp",
-    text: `${siteConfig.counselingRoom}. Có thể đặt lịch trước.`,
+    text: `${siteConfig.counselingRoom}. Bạn nên đặt lịch trước để chuyên viên chờ sẵn.`,
     status: "Đang hoạt động",
   },
 ];
 
 const STEPS = [
   { icon: HeartHandshake, title: "Chọn hình thức", text: "Ẩn danh hay có danh tính, trực tuyến hay trực tiếp, tuỳ bạn." },
-  { icon: CalendarCheck, title: "Chọn thời gian", text: "Chọn khung giờ bạn thấy thoải mái, không ảnh hưởng giờ học." },
+  { icon: CalendarCheck, title: "Chọn thời gian", text: "Chọn giờ nào bạn thấy tiện, kể cả buổi tối, để khỏi lỡ giờ học." },
   { icon: MessageCircleHeart, title: "Trò chuyện", text: "Chuyên viên lắng nghe, không phán xét và cùng bạn tìm hướng đi." },
 ];
 
@@ -73,7 +73,7 @@ export default function CounselingPage() {
             <Link href="/dat-lich" className="btn btn-primary btn-lg">
               <CalendarCheck size={20} aria-hidden="true" /> Đặt lịch hẹn tư vấn
             </Link>
-            <p className="survey-muted small">Chọn trực tuyến hoặc gặp trực tiếp, chọn ngày giờ (có cả buổi tối). Cần đăng nhập tài khoản học sinh.</p>
+            <p className="survey-muted small">Bạn có thể gọi video với chuyên viên ngay trên web hoặc hẹn gặp trực tiếp. Ban ngày bận học thì buổi tối cũng có giờ trống đó. Nhớ đăng nhập tài khoản học sinh trước nhé.</p>
           </div>
 
           <div className="section-head section-head-spaced">

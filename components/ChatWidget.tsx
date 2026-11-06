@@ -112,7 +112,7 @@ export default function ChatWidget() {
         signal: controller.signal,
       });
       if (!res.ok || !res.body) {
-        appendToReply((await res.text()) || "Có lỗi xảy ra, bạn thử lại nhé.");
+        appendToReply((await res.text()) || "Mình đang gặp chút trục trặc, bạn thử lại nhé.");
         return;
       }
       const reader = res.body.getReader();

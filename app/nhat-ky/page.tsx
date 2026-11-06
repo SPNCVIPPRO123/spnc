@@ -34,8 +34,9 @@ export default async function DiaryPage({ searchParams }: { searchParams: Promis
         <div className="diary-intro">
           <h1>Nhật ký cảm xúc của {student.nickname}</h1>
           <p className="survey-muted">
-            Mỗi ngày chọn một bạn nhỏ giống cảm xúc của em và viết vài dòng nếu muốn. Em chỉ ghi được cho đúng ngày hôm nay, ngày đã qua thì xem lại được. Nhật ký chỉ mình em xem được, chuyên
-            viên và thầy cô không đọc được.
+            Mỗi ngày, em chọn một bạn nhỏ giống tâm trạng của mình và viết thêm vài dòng nếu thích. Nhật ký chỉ ghi cho
+            hôm nay, còn những ngày trước em mở ra xem lại được. Chỉ mình em đọc được nhật ký này, chuyên viên hay thầy
+            cô đều không xem được.
           </p>
         </div>
         <MoodDiary key={month} month={month} today={today} initialEntries={entries} />
