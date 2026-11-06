@@ -73,7 +73,7 @@ export default async function CallPage({
           <CalendarClock size={18} aria-hidden="true" className="inline-icon" /> Buổi hẹn: <strong>{slot}</strong>. Phòng mở
           lúc <strong>{opensAtLabel(call.startsAt)}</strong>.
         </p>
-        <CallCountdown opensAt={callWindow(call.startsAt).opens} />
+        <CallCountdown opensAt={callWindow(call.startsAt, call.openedAt).opens} />
       </Notice>
     );
   }
@@ -96,7 +96,7 @@ export default async function CallPage({
           role={call.role}
           otherName={other}
           slot={slot}
-          closesAt={callWindow(call.startsAt).closes}
+          closesAt={callWindow(call.startsAt, call.openedAt).closes}
           iceServers={await iceServers()}
           hasTurn={hasTurn()}
           back={back}

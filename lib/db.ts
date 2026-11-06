@@ -88,6 +88,8 @@ export function ensureSchema(): Promise<void> {
         created_at TIMESTAMPTZ NOT NULL DEFAULT now()
       )`;
     await sql`CREATE INDEX IF NOT EXISTS call_signals_appt_idx ON call_signals (appointment_id, id)`;
+    // Lúc chuyên viên bấm "Mở phòng ngay" (vào phòng gọi trước giờ hẹn).
+    await sql`ALTER TABLE appointments ADD COLUMN IF NOT EXISTS call_opened_at TIMESTAMPTZ`;
   })().catch((err) => {
     ready = null;
     throw err;
