@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { clearStaffCookie, isStaff } from "@/lib/staffAuth";
 import { deleteSubmission, updateStatus, type Status } from "@/lib/staffData";
 import { STAFF_NOTE_MAX, type AppointmentStatus } from "@/lib/booking";
-import { setAppointmentStatus } from "@/lib/bookingData";
+import { openCallNow, setAppointmentStatus } from "@/lib/bookingData";
 
 export async function logout() {
   await clearStaffCookie();
@@ -35,4 +35,12 @@ export async function updateAppointment(form: FormData) {
   if (status) await setAppointmentStatus(id, status, note || null);
   const back = String(form.get("loc") ?? "");
   redirect(`/chuyen-vien/lich-hen${/^[a-z-]+$/.test(back) ? `?loc=${back}` : ""}`);
+}
+
+// Mở phòng gọi video ngay (không chờ giờ hẹn), rồi vào phòng luôn.
+export async function openCallNowAction(form: FormData) {
+  if (!(await isStaff())) redirect("/chuyen-vien");
+  const id = String(form.get("id") ?? "");
+  await openCallNow(id);
+  redirect(`/goi-video/${encodeURIComponent(id)}?vai=cv`);
 }

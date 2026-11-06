@@ -90,9 +90,9 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
                   <span>{MODE_LABELS[a.mode]}</span>
                   {a.mode === "offline" && <span>{BOOKING.offlinePlace}</span>}
                 </div>
-                {a.mode === "online" && a.status === "xac-nhan" && callTiming(a.starts_at, now) !== "het" && (
+                {a.mode === "online" && a.status === "xac-nhan" && callTiming(a.starts_at, now, a.call_opened_at) !== "het" && (
                   <p className="call-entry">
-                    {callTiming(a.starts_at, now) === "mo" ? (
+                    {callTiming(a.starts_at, now, a.call_opened_at) === "mo" ? (
                       <Link href={`/goi-video/${a.id}`} className="btn btn-primary btn-sm">
                         <Video size={16} aria-hidden="true" /> Vào phòng gọi video
                       </Link>

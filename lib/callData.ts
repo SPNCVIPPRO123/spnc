@@ -11,6 +11,7 @@ export type CallInfo = {
   id: string;
   role: CallRole;
   startsAt: string;
+  openedAt: string | null;
   nickname: string | null;
   timing: CallTiming;
 };
@@ -28,13 +29,14 @@ export async function callAccess(id: string, wanted?: string | null): Promise<Ca
   if (!/^[0-9a-f-]{36}$/.test(id)) return "khong-co";
   const q = await db();
   const [appt] = (await q`
-    SELECT a.id, a.student_id, a.starts_at, a.mode, a.status, s.nickname
+    SELECT a.id, a.student_id, a.starts_at, a.mode, a.status, a.call_opened_at, s.nickname
     FROM appointments a LEFT JOIN students s ON s.id = a.student_id WHERE a.id = ${id}`) as {
     id: string;
     student_id: string | null;
     starts_at: string | Date;
     mode: string;
     status: string;
+    call_opened_at: string | Date | null;
     nickname: string | null;
   }[];
 
@@ -52,7 +54,8 @@ export async function callAccess(id: string, wanted?: string | null): Promise<Ca
   if (appt.status !== "xac-nhan") return "chua-xac-nhan";
 
   const startsAt = new Date(appt.starts_at).toISOString();
-  return { id: appt.id, role, startsAt, nickname: appt.nickname, timing: callTiming(startsAt) };
+  const openedAt = appt.call_opened_at ? new Date(appt.call_opened_at).toISOString() : null;
+  return { id: appt.id, role, startsAt, openedAt, nickname: appt.nickname, timing: callTiming(startsAt, Date.now(), openedAt) };
 }
 
 export type Signal = { id: number; sid: string; target: string | null; kind: string; payload: unknown };
