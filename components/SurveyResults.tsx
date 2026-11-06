@@ -135,9 +135,9 @@ export default function SurveyResults({
           <div>
             <h3>Không ai được phép làm tổn thương em</h3>
             <p>
-              Một số câu trả lời cho thấy có thể em đang bị đối xử không đúng (bị đánh, mắng chửi, đe dọa, ép buộc hay
-              đụng chạm khiến em sợ hãi). Đó không phải lỗi của em. Hãy kể với một người lớn em tin tưởng hoặc gọi{" "}
-              <a href="tel:111">111</a> (miễn phí, 24/7).
+              Một số câu trả lời cho thấy có thể em đang bị đối xử không đúng, như bị đánh, bị mắng chửi, đe dọa, ép buộc
+              hay bị đụng chạm khiến em sợ. Đó không phải lỗi của em. Hãy kể với một người lớn em tin tưởng hoặc gọi{" "}
+              <a href="tel:111">111</a>, gọi miễn phí và có người nghe máy cả ngày lẫn đêm.
             </p>
           </div>
         </div>
@@ -245,7 +245,7 @@ export default function SurveyResults({
         )}
         {events.length > 0 && (
           <p className="survey-muted">
-            Em đã trải qua {events.length} thay đổi lớn trong năm qua ({events.join("; ").toLowerCase()}). Những biến cố
+            Năm qua em đã trải qua {events.length} thay đổi lớn: {events.join("; ").toLowerCase()}. Những biến cố
             như vậy có thể ảnh hưởng tới cảm xúc trong thời gian dài, nên em hãy nhẹ nhàng với bản thân.
           </p>
         )}
@@ -262,7 +262,7 @@ export default function SurveyResults({
         ) : (
           <p>
             Phiếu của em <strong>chưa được gửi</strong> tới chuyên viên. Em hãy <strong>in kết quả này</strong> mang tới
-            phòng tư vấn ({siteConfig.counselingRoom}) hoặc bấm “Xem lại câu trả lời” để thử gửi lại.
+            {siteConfig.counselingRoom}, hoặc bấm “Xem lại câu trả lời” để thử gửi lại.
           </p>
         )}
       </div>
@@ -292,7 +292,7 @@ export default function SurveyResults({
             </div>
             <p className="survey-muted small">
               Trên máy này, câu trả lời chỉ được lưu tạm và tự xóa khi em đóng tab. Nếu dùng máy chung, hãy bấm “Xóa câu
-              trả lời” khi xong (phiếu đã gửi cho chuyên viên vẫn được giữ).
+              trả lời” khi xong. Phiếu đã gửi cho chuyên viên thì vẫn được giữ lại.
             </p>
           </>
         )}

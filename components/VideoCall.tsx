@@ -249,7 +249,7 @@ async function getMedia(): Promise<{ stream: MediaStream; problem: string | null
         stream,
         problem: denied
           ? "Trình duyệt chưa cho dùng camera, nên cuộc gọi chỉ có tiếng."
-          : "Không mở được camera (có thể ứng dụng khác đang dùng), nên cuộc gọi chỉ có tiếng.",
+          : "Không mở được camera, có thể do ứng dụng khác đang dùng. Cuộc gọi sẽ chỉ có tiếng.",
       };
     } catch {
       return {
@@ -414,7 +414,7 @@ export default function VideoCall(props: {
         <div>
           <h1>Phòng gọi video</h1>
           <p className="survey-muted">
-            Buổi hẹn {slot} · phòng đóng lúc {clock(closesAt)}. Cuộc gọi không được ghi hình hay ghi âm.
+            Buổi hẹn {slot}, phòng đóng lúc {clock(closesAt)}. Cuộc gọi không bị ghi hình hay ghi âm đâu.
           </p>
         </div>
         <Link href={back} className="link-button" onClick={() => engineRef.current?.stop()}>
@@ -429,7 +429,7 @@ export default function VideoCall(props: {
             {closed === "het-gio" ? (
               <p>Đã hết giờ hẹn, phòng gọi đã đóng.</p>
             ) : closed === "khong-quyen" ? (
-              <p>Phòng gọi đã đóng (lịch hẹn vừa được đổi trạng thái, hoặc em đã đăng xuất).</p>
+              <p>Phòng gọi đã đóng vì lịch hẹn vừa thay đổi, hoặc em đã đăng xuất.</p>
             ) : closed === "tu-roi" ? (
               <p>Em đã rời phòng.</p>
             ) : !joined ? (
@@ -441,8 +441,8 @@ export default function VideoCall(props: {
                 <p>{fill(STATE_TEXT[state])}</p>
                 {(state === "loi" || slow) && (
                   <p className="call-tip">
-                    Mạng đang chặn kết nối (hay gặp ở wifi trường hoặc công ty). Em thử đổi sang 4G hoặc wifi khác rồi bấm
-                    Vào lại.{!hasTurn && role === "cv" && " Nếu vẫn lỗi, hãy bật máy chủ TURN miễn phí theo hướng dẫn trong README."}
+                    Có vẻ mạng này đang chặn cuộc gọi, hay gặp ở wifi trường hoặc công ty. Em thử chuyển sang 4G hoặc wifi
+                    khác rồi bấm Vào lại.{!hasTurn && role === "cv" && " Nếu vẫn lỗi, nhờ người quản lý web bật thêm đường truyền dự phòng cho cuộc gọi."}
                   </p>
                 )}
               </>
@@ -512,7 +512,7 @@ export default function VideoCall(props: {
 
       {role === "hs" && (
         <p className="survey-muted small">
-          Nếu em đang gặp nguy hiểm hoặc cần giúp ngay mà chưa gọi được, hãy gọi 111 (miễn phí, 24/7).
+          Nếu em đang gặp nguy hiểm hoặc cần giúp ngay mà chưa gọi được, hãy gọi ngay 111. Gọi miễn phí, cả ngày lẫn đêm đều có người nghe máy.
         </p>
       )}
     </div>

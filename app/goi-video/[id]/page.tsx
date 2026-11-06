@@ -53,14 +53,14 @@ export default async function CallPage({
   if (call === "khong-co") {
     return (
       <Notice title="Không tìm thấy phòng gọi" back={back}>
-        <p>Phòng này không có, hoặc không phải lịch hẹn trực tuyến của em.</p>
+        <p>Có thể đường link bị sai, hoặc đây không phải lịch hẹn gọi video của em.</p>
       </Notice>
     );
   }
   if (call === "chua-xac-nhan") {
     return (
       <Notice title="Phòng gọi chưa mở" back={back}>
-        <p>Lịch hẹn này chưa được chuyên viên xác nhận, đã hủy hoặc đã tư vấn xong, nên phòng gọi không mở.</p>
+        <p>Phòng gọi chỉ mở khi chuyên viên đã xác nhận lịch hẹn. Lịch này có thể chưa được xác nhận, đã bị hủy hoặc buổi tư vấn đã xong rồi.</p>
       </Notice>
     );
   }

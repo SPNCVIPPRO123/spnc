@@ -207,7 +207,7 @@ export default function MoodDiary({
               </div>
               {saved?.note && <p className="diary-note-view">{saved.note}</p>}
               <p className="diary-lock">
-                <Lock size={14} aria-hidden="true" /> Ngày đã qua chỉ xem lại được. Nhật ký chỉ ghi trong đúng ngày hôm nay.
+                <Lock size={14} aria-hidden="true" /> Ngày này đã qua nên em chỉ xem lại được thôi.
               </p>
               {today.startsWith(month) && (
                 <button type="button" className="btn btn-soft btn-sm" onClick={() => pick(today)}>
@@ -252,7 +252,7 @@ export default function MoodDiary({
               </div>
 
               <label className="diary-note-label" htmlFor="diary-note">
-                Ghi chú (không bắt buộc)
+                Vài dòng cho hôm nay, không viết cũng được
               </label>
               <textarea
                 id="diary-note"
@@ -292,8 +292,8 @@ export default function MoodDiary({
         {heavyDays >= 3 && (
           <div className="diary-card diary-care">
             <p>
-              Mấy ngày gần đây em có vẻ không được vui. Em không phải tự mình chịu đựng đâu: hãy kể cho bạn trò chuyện hoặc
-              gửi câu hỏi cho phòng tham vấn nhé.
+              Mấy ngày gần đây em có vẻ không được vui. Em không phải tự mình chịu đựng đâu. Kể với {siteConfig.botName}
+              hoặc hẹn gặp chuyên viên tham vấn nhé.
             </p>
             <div className="diary-actions">
               <OpenChatButton className="btn btn-primary btn-sm" message="Mấy ngày gần đây mình thấy không được vui.">

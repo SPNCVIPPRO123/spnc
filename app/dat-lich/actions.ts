@@ -27,16 +27,16 @@ export async function book(_prev: BookState, form: FormData): Promise<BookState>
   if (!isBookable(date, time)) return { error: "Khung giờ này không còn đặt được. Em chọn giờ khác nhé." };
 
   const contact = text(form, "contact", CONTACT_MAX);
-  if (contact === false) return { error: `Cách liên lạc dài tối đa ${CONTACT_MAX} ký tự.` };
+  if (contact === false) return { error: `Cách liên lạc em ghi hơi dài, em rút gọn dưới ${CONTACT_MAX} ký tự nhé.` };
   const note = text(form, "note", NOTE_MAX);
-  if (note === false) return { error: `Lời nhắn dài tối đa ${NOTE_MAX} ký tự.` };
+  if (note === false) return { error: `Lời nhắn hơi dài, em rút gọn dưới ${NOTE_MAX} ký tự nhé.` };
 
   const result = await bookAppointment(student.id, slotStart(date, time), mode as Mode, contact, note);
   if (result === "full") return { error: "Vừa có bạn khác đặt khung giờ này. Em chọn giờ khác nhé." };
   if (result === "duplicate") return { error: "Em đã đặt khung giờ này rồi." };
   if (result === "limit")
     return {
-      error: `Em đang có ${BOOKING.maxActivePerStudent} lịch hẹn chưa diễn ra. Hãy hủy bớt một lịch nếu muốn đặt giờ khác.`,
+      error: `Em đang có sẵn ${BOOKING.maxActivePerStudent} lịch hẹn sắp tới rồi. Muốn đặt giờ khác thì em hủy bớt một lịch trước nhé.`,
     };
   redirect("/dat-lich?da-dat=1");
 }

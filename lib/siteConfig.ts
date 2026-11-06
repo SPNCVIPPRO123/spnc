@@ -6,7 +6,7 @@ export const siteConfig = {
   botName: "Bạn Đồng Hành",
 
   // Cách liên hệ phòng tham vấn tâm lý của trường (hiển thị cho học sinh).
-  counselingRoom: "Phòng Tham vấn tâm lý – tầng 2, nhà A (giờ hành chính các ngày trong tuần)",
+  counselingRoom: "Phòng Tham vấn tâm lý, tầng 2 nhà A, mở cửa giờ hành chính các ngày trong tuần",
 
   // Cách liên lạc với chuyên viên, hiện trong khung mời để lại liên lạc sau khi làm khảo sát.
   // Ô nào để trống ("") thì không hiện. Đây là sản phẩm nghiên cứu, nên đang dùng thông tin giả định (demo: true
@@ -24,7 +24,7 @@ export const siteConfig = {
 
   // Số điện thoại khẩn cấp (miễn phí, 24/7).
   hotlines: [
-    { number: "111", label: "Tổng đài quốc gia bảo vệ trẻ em (miễn phí, 24/7)" },
+    { number: "111", label: "Tổng đài quốc gia bảo vệ trẻ em, gọi miễn phí cả ngày lẫn đêm" },
     { number: "115", label: "Cấp cứu y tế" },
     { number: "113", label: "Công an" },
   ],

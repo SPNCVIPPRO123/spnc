@@ -273,7 +273,7 @@ function SectionStep({
 
       {missing.length > 0 && (
         <p className="survey-missing" role="alert">
-          Bạn còn {missing.length} câu chưa trả lời (đánh dấu viền đỏ).
+          Bạn còn {missing.length} câu chưa trả lời, mình đã tô viền đỏ để bạn dễ tìm.
         </p>
       )}
 
@@ -395,7 +395,7 @@ function MultiField({
           className="survey-text"
           type="text"
           maxLength={200}
-          placeholder="Em ghi thêm ở đây (không bắt buộc)"
+          placeholder="Em muốn kể thêm thì ghi ở đây, không ghi cũng được"
           value={typeof answers[otherId] === "string" ? (answers[otherId] as string) : ""}
           onChange={(e) => onAnswer(otherId, e.target.value || undefined)}
         />

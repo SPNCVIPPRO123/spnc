@@ -37,7 +37,7 @@ export default function BookingForm({ days }: { days: BookingDay[] }) {
             <span>
               <MessagesSquare size={22} aria-hidden="true" />
               <b>Trực tuyến</b>
-              <small>Gọi video với chuyên viên ngay trên web. Khi lịch được xác nhận, đến giờ em bấm Vào phòng gọi video.</small>
+              <small>Gọi video với chuyên viên ngay trên web này. Khi chuyên viên xác nhận, đến giờ em chỉ cần bấm Vào phòng gọi video.</small>
             </span>
           </label>
           <label className="booking-mode">
@@ -99,7 +99,7 @@ export default function BookingForm({ days }: { days: BookingDay[] }) {
       </fieldset>
 
       <fieldset className="booking-step">
-        <legend>4. Thêm thông tin (không bắt buộc)</legend>
+        <legend>4. Vài điều thêm, em bỏ qua cũng được</legend>
         <label htmlFor="bk-contact">Cách liên lạc với em</label>
         <input
           id="bk-contact"
@@ -109,7 +109,7 @@ export default function BookingForm({ days }: { days: BookingDay[] }) {
           placeholder="Ví dụ: Zalo, số điện thoại hoặc email"
         />
         <p className="survey-muted small">
-          Nếu để trống, chuyên viên sẽ nhắn cho em ngay trên trang này (mục “Lịch hẹn của em” bên dưới).
+          Nếu em để trống, chuyên viên sẽ nhắn ngay trên trang này, ở mục “Lịch hẹn của em” bên dưới.
         </p>
         <label htmlFor="bk-note">Điều em muốn chia sẻ trước với chuyên viên</label>
         <textarea id="bk-note" name="note" className="survey-text" rows={3} maxLength={NOTE_MAX} />
@@ -218,7 +218,8 @@ function MonthCalendar({
         })}
       </div>
       <p className="cal-legend survey-muted small">
-        <span className="cal-dot" /> Ngày có thể đặt · ngày mờ là ngày không có tư vấn hoặc ngoài {BOOKING.daysAhead} ngày tới.
+        <span className="cal-dot" /> Ngày còn giờ trống. Ngày bị mờ là hôm không có buổi tư vấn, hoặc còn xa quá vì em chỉ
+        đặt được trong {BOOKING.daysAhead} ngày tới.
       </p>
     </div>
   );
